@@ -6,36 +6,61 @@ sidebar_position: 5
 
 다수의 경량 에이전트가 협력하는 창발적 패턴입니다.
 
+![Swarm Intelligence](https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=400&fit=crop&q=80)
+
 ## Pattern Overview
 
-```
-        ┌─────────────────────────────────────────┐
-        │              Swarm Network              │
-        │                                         │
-        │    ○───○     ○───○     ○───○          │
-        │     \ /       \ /       \ /            │
-        │      ○────────○────────○               │
-        │     / \       / \       / \            │
-        │    ○───○     ○───○     ○───○          │
-        │                                         │
-        │    ○ = Lightweight Agent               │
-        │    ─ = Handoff Connection              │
-        │                                         │
-        └─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Swarm["🐝 Swarm Network"]
+        A1(("○")) --- A2(("○"))
+        A2 --- A3(("○"))
+        A3 --- A4(("○"))
+        A4 --- A5(("○"))
+        A5 --- A1
+        A1 --- A3
+        A2 --- A4
+    end
+
+    User["👤 User"] --> A1
+    A5 --> Result["📄 Result"]
+
+    style A1 fill:#3498db,stroke:#fff,color:#fff
+    style A2 fill:#27ae60,stroke:#fff,color:#fff
+    style A3 fill:#e74c3c,stroke:#fff,color:#fff
+    style A4 fill:#9b59b6,stroke:#fff,color:#fff
+    style A5 fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ## What is Swarm?
 
 OpenAI Swarm에서 영감을 받은 패턴으로, 경량 에이전트들이 핸드오프(handoff)를 통해 협력합니다.
 
+```mermaid
+mindmap
+  root((Swarm<br/>Pattern))
+    Lightweight Agents
+      Single responsibility
+      Minimal state
+      Fast execution
+    Handoff Mechanism
+      Dynamic routing
+      Context passing
+      Seamless transfer
+    Emergent Behavior
+      No central control
+      Self-organizing
+      Adaptive
+```
+
 ### Key Concepts
 
 | Concept | Description |
 |---------|-------------|
-| Agent | 특정 작업을 수행하는 경량 단위 |
-| Handoff | 다른 에이전트로 제어권 이전 |
-| Context Variables | 에이전트 간 공유 상태 |
-| Routines | 재사용 가능한 작업 패턴 |
+| **Agent** | 특정 작업을 수행하는 경량 단위 |
+| **Handoff** | 다른 에이전트로 제어권 이전 |
+| **Context Variables** | 에이전트 간 공유 상태 |
+| **Routines** | 재사용 가능한 작업 패턴 |
 
 ## When to Use
 
@@ -43,6 +68,28 @@ OpenAI Swarm에서 영감을 받은 패턴으로, 경량 에이전트들이 핸�
 - 동적 에이전트 전환이 필요할 때
 - 가벼운 오케스트레이션이 필요할 때
 - 확장 가능한 에이전트 네트워크 구축 시
+
+## Customer Service Swarm Example
+
+```mermaid
+flowchart TB
+    User["👤 Customer"] --> Triage["🎯 Triage Agent"]
+
+    Triage --> Billing["💳 Billing Agent"]
+    Triage --> Tech["🔧 Technical Agent"]
+    Triage --> Sales["🛒 Sales Agent"]
+    Triage --> Refund["↩️ Refund Agent"]
+
+    Billing <--> Tech
+    Billing <--> Refund
+    Tech <--> Sales
+
+    style Triage fill:#e74c3c,stroke:#fff,color:#fff
+    style Billing fill:#3498db,stroke:#fff,color:#fff
+    style Tech fill:#27ae60,stroke:#fff,color:#fff
+    style Sales fill:#9b59b6,stroke:#fff,color:#fff
+    style Refund fill:#f39c12,stroke:#fff,color:#fff
+```
 
 ## Swarm Agent Prompt
 
@@ -77,40 +124,12 @@ When you need to handoff:
 3. Explain why handoff is needed
 4. Provide context for receiving agent
 
-Handoff format:
-```json
-{{
-  "handoff_to": "agent_name",
-  "reason": "Why this agent is better suited",
-  "context": {{
-    "completed": "What you've done",
-    "pending": "What still needs to be done",
-    "data": "Any relevant data"
-  }}
-}}
-```
-
 ## Context Variables
 
-You have access to these shared variables:
-[context_variables placeholder]
-
-You can update context:
-```json
-{{
-  "update_context": {{
-    "key": "value"
-  }}
-}}
-```
+You have access to shared context variables.
+You can read and update context as needed.
 """
-```
 
-## Swarm Examples
-
-### Customer Service Swarm
-
-```python
 TRIAGE_AGENT = """
 # Identity
 You are TriageAgent, the first point of contact.
@@ -144,119 +163,54 @@ You are BillingAgent, handling payment issues.
 - Subscription management
 - Payment method updates
 
-## Handoff Options
-- TriageAgent: For non-billing issues
-- RefundAgent: For refund processing
-- TechnicalAgent: For payment system errors
-
 ## Tools Available
 - lookup_invoice(customer_id)
 - check_payment_status(invoice_id)
 - update_payment_method(customer_id, method)
 
-## Handle Yourself When
-- Invoice questions
-- Payment status checks
-- Subscription changes
-- Payment method updates
-
-## Handoff When
-- Customer wants refund → RefundAgent
-- Payment system technical error → TechnicalAgent
-- Unrelated question → TriageAgent
-"""
-
-TECHNICAL_AGENT = """
-# Identity
-You are TechnicalAgent, handling technical issues.
-
-## Your Specialty
-- Product troubleshooting
-- Bug reports
-- Technical guidance
-- System status
-
 ## Handoff Options
-- TriageAgent: For non-technical issues
-- BillingAgent: For payment-related issues
-- SalesAgent: For feature requests/upgrades
-
-## Tools Available
-- check_system_status()
-- lookup_error_code(code)
-- create_support_ticket(details)
-- get_documentation(topic)
-
-## Handle Yourself When
-- Technical troubleshooting
-- Error resolution
-- Product usage questions
-- Bug reports
-
-## Handoff When
-- Customer has billing issue → BillingAgent
-- Customer wants to upgrade → SalesAgent
-- Issue unrelated to tech → TriageAgent
+- TriageAgent: For non-billing issues
+- RefundAgent: For refund processing
+- TechnicalAgent: For payment system errors
 """
 ```
 
-### Research Swarm
+## Research Swarm Example
 
-```python
-SEARCH_AGENT = """
-# Identity
-You are SearchAgent, finding information.
+```mermaid
+flowchart LR
+    Search["🔍 Search Agent"] --> Analysis["📊 Analysis Agent"]
+    Analysis --> FactCheck["✅ Fact Check Agent"]
+    FactCheck --> Writer["✍️ Writer Agent"]
 
-## Your Specialty
-- Web search
-- Source discovery
-- Initial information gathering
+    Search <--> FactCheck
+    Analysis <--> Writer
 
-## Handoff Options
-- AnalysisAgent: When raw data needs analysis
-- WriterAgent: When findings need formatting
-- FactCheckAgent: When claims need verification
-
-## Handle Yourself When
-- Finding sources
-- Gathering raw information
-- Discovering relevant content
-
-## Handoff When
-- Data needs deeper analysis → AnalysisAgent
-- Need to verify specific claims → FactCheckAgent
-- Ready to write final output → WriterAgent
-"""
-
-ANALYSIS_AGENT = """
-# Identity
-You are AnalysisAgent, processing information.
-
-## Your Specialty
-- Data analysis
-- Pattern recognition
-- Insight extraction
-
-## Handoff Options
-- SearchAgent: When more data is needed
-- FactCheckAgent: When findings need verification
-- WriterAgent: When analysis is complete
-
-## Handle Yourself When
-- Analyzing data
-- Finding patterns
-- Drawing conclusions
-
-## Handoff When
-- Need more source data → SearchAgent
-- Conclusions need verification → FactCheckAgent
-- Analysis complete → WriterAgent
-"""
+    style Search fill:#3498db,stroke:#fff,color:#fff
+    style Analysis fill:#27ae60,stroke:#fff,color:#fff
+    style FactCheck fill:#e74c3c,stroke:#fff,color:#fff
+    style Writer fill:#9b59b6,stroke:#fff,color:#fff
 ```
 
 ## Implementation
 
 ### OpenAI Swarm Style
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant T as Triage
+    participant B as Billing
+    participant R as Refund
+
+    U->>T: "I want a refund"
+    T->>T: Analyze intent
+    T->>B: Handoff (billing context)
+    B->>B: Check invoice
+    B->>R: Handoff (refund needed)
+    R->>R: Process refund
+    R-->>U: Refund confirmed
+```
 
 ```python
 from dataclasses import dataclass
@@ -320,14 +274,6 @@ class Swarm:
                     # Handoff to new agent
                     current_agent = result
                     continue
-                else:
-                    # Function result
-                    history.append({
-                        "role": "function",
-                        "name": message.function_call.name,
-                        "content": str(result)
-                    })
-                    continue
 
             # No function call, conversation complete
             break
@@ -337,64 +283,6 @@ class Swarm:
             messages=history,
             context_variables=context_variables
         )
-
-    def _build_prompt(self, agent: Agent, context: dict) -> str:
-        handoff_info = "\n".join([
-            f"- {h.name}: {h.instructions[:100]}..."
-            for h in agent.handoffs
-        ])
-
-        return f"""
-{agent.instructions}
-
-## Available Handoffs
-{handoff_info}
-
-## Context Variables
-{json.dumps(context, indent=2)}
-
-To handoff, call the transfer_to_[agent_name] function.
-"""
-
-    def _get_functions(self, agent: Agent) -> List[dict]:
-        functions = []
-
-        # Add agent's functions
-        for func in agent.functions:
-            functions.append(function_to_schema(func))
-
-        # Add handoff functions
-        for handoff_agent in agent.handoffs:
-            functions.append({
-                "name": f"transfer_to_{handoff_agent.name.lower()}",
-                "description": f"Transfer to {handoff_agent.name}",
-                "parameters": {"type": "object", "properties": {}}
-            })
-
-        return functions
-
-    def _handle_function(
-        self,
-        agent: Agent,
-        function_call,
-        context: dict
-    ) -> Union[Agent, str]:
-        name = function_call.name
-
-        # Check for handoff
-        if name.startswith("transfer_to_"):
-            target_name = name.replace("transfer_to_", "")
-            for handoff_agent in agent.handoffs:
-                if handoff_agent.name.lower() == target_name:
-                    return handoff_agent
-
-        # Execute regular function
-        for func in agent.functions:
-            if func.__name__ == name:
-                args = json.loads(function_call.arguments)
-                return func(**args, context=context)
-
-        return f"Unknown function: {name}"
 ```
 
 ### Usage Example
@@ -435,51 +323,60 @@ result = swarm.run(
 )
 
 print(f"Final agent: {result.agent.name}")
-print(f"Messages: {len(result.messages)}")
 ```
 
 ## Context Variables
 
-```python
-# Shared state across agents
-context = {
-    "customer_id": "12345",
-    "session_start": "2024-01-15T10:00:00Z",
-    "previous_agents": ["Triage"],
-    "customer_info": {
-        "name": "John Doe",
-        "tier": "premium",
-        "history": ["support_ticket_123"]
-    },
-    "current_issue": {
-        "type": "billing",
-        "severity": "medium"
-    }
-}
+```mermaid
+flowchart TB
+    subgraph Context["📦 Shared Context"]
+        CV["Context Variables"]
+        CID["customer_id: 12345"]
+        Session["session_start: ..."]
+        History["previous_agents: [...]"]
+        Info["customer_info: {...}"]
+    end
 
-# Agents can read and update
-def update_context(context: dict, updates: dict) -> dict:
-    context.update(updates)
-    return context
+    A1["Agent 1"] --> |read/write| Context
+    A2["Agent 2"] --> |read/write| Context
+    A3["Agent 3"] --> |read/write| Context
+
+    style Context fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ## Best Practices
 
 ### Agent Design
 
+```mermaid
+flowchart LR
+    subgraph Good["✅ Good Design"]
+        G1["Focused"]
+        G2["Clear handoffs"]
+        G3["Minimal state"]
+    end
+
+    subgraph Bad["❌ Bad Design"]
+        B1["Too broad"]
+        B2["Unclear routing"]
+        B3["Heavy state"]
+    end
+```
+
 - Keep agents focused and lightweight
 - Clear handoff criteria
 - Minimal state in each agent
 - Well-defined interfaces
 
-### Handoff Design
-
-- Explicit handoff conditions
-- Context preservation
-- Graceful degradation
-- Circular handoff prevention
-
 ### Monitoring
+
+```mermaid
+flowchart LR
+    Agents["🤖 Swarm Agents"] --> Monitor["📊 Monitor"]
+    Monitor --> Flows["Handoff Flows"]
+    Monitor --> Usage["Agent Usage"]
+    Monitor --> Metrics["Performance Metrics"]
+```
 
 ```python
 class SwarmMonitor:
@@ -508,3 +405,30 @@ class SwarmMonitor:
             diagram += f"  {flow}: {count}x\n"
         return diagram
 ```
+
+## Swarm vs Other Patterns
+
+```mermaid
+quadrantChart
+    title Pattern Comparison
+    x-axis Lightweight --> Heavyweight
+    y-axis Rigid --> Flexible
+    quadrant-1 Adaptive Systems
+    quadrant-2 Enterprise
+    quadrant-3 Simple Tasks
+    quadrant-4 Structured Workflows
+
+    Swarm: [0.2, 0.9]
+    Orchestrator: [0.6, 0.5]
+    Supervisor: [0.7, 0.4]
+    Hierarchical: [0.9, 0.3]
+    PeerToPeer: [0.4, 0.8]
+```
+
+| Pattern | Best For | Complexity |
+|---------|----------|------------|
+| **Swarm** | Dynamic routing, customer service | ⭐ Low |
+| **Orchestrator** | Complex workflows | ⭐⭐ Medium |
+| **Supervisor** | Quality-critical tasks | ⭐⭐ Medium |
+| **Hierarchical** | Enterprise scale | ⭐⭐⭐ High |
+| **Peer-to-Peer** | Expert discussions | ⭐⭐ Medium |

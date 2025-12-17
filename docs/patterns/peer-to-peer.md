@@ -6,31 +6,92 @@ sidebar_position: 4
 
 동등한 에이전트들이 직접 협력하는 패턴입니다.
 
+![Peer-to-Peer Collaboration](https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop&q=80)
+
 ## Pattern Overview
 
-```
-         ┌────────────────────────────────────┐
-         │                                    │
-         │    ┌──────────┐    ┌──────────┐   │
-         │    │ Agent A  │◄───│ Agent B  │   │
-         │    │          │───►│          │   │
-         │    └────┬─────┘    └─────┬────┘   │
-         │         │                │        │
-         │         │    ┌──────────┐│        │
-         │         └───►│ Agent C  │◄────────┤
-         │              │          │         │
-         │              └──────────┘         │
-         │                                   │
-         │        Shared Message Bus         │
-         └───────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Network["🌐 Peer Network"]
+        A["🤖 Agent A"] <--> B["🤖 Agent B"]
+        B <--> C["🤖 Agent C"]
+        C <--> A
+
+        MB["📫 Shared Message Bus"]
+    end
+
+    A & B & C <--> MB
+
+    style A fill:#3498db,stroke:#fff,color:#fff
+    style B fill:#27ae60,stroke:#fff,color:#fff
+    style C fill:#9b59b6,stroke:#fff,color:#fff
+    style MB fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ## When to Use
+
+```mermaid
+mindmap
+  root((Peer-to-Peer<br/>Pattern))
+    Expert Discussion
+      Multiple perspectives
+      Debate & challenge
+      Consensus building
+    No Hierarchy
+      Equal authority
+      Democratic decisions
+      Collaborative
+    Dynamic Collaboration
+      Flexible roles
+      Ad-hoc teams
+      Real-time adaptation
+```
 
 - 전문가 간 토론/논쟁이 필요할 때
 - 합의 기반 의사결정이 필요할 때
 - 계층 구조가 적합하지 않을 때
 - 동적 협업이 필요할 때
+
+## Technical Review Panel Example
+
+```mermaid
+flowchart TB
+    subgraph Panel["🔍 Technical Review Panel"]
+        SE["🔒 Security<br/>Expert"]
+        PE["⚡ Performance<br/>Expert"]
+        ME["🔧 Maintainability<br/>Expert"]
+    end
+
+    Code["📝 Code to Review"] --> Panel
+    SE <--> PE
+    PE <--> ME
+    ME <--> SE
+    Panel --> Decision["📋 Consolidated Review"]
+
+    style SE fill:#e74c3c,stroke:#fff,color:#fff
+    style PE fill:#3498db,stroke:#fff,color:#fff
+    style ME fill:#27ae60,stroke:#fff,color:#fff
+```
+
+## Research Debate Panel
+
+```mermaid
+flowchart LR
+    subgraph Debate["💬 Research Debate"]
+        O["🌟 Optimist<br/>Researcher"]
+        P["⚠️ Pessimist<br/>Researcher"]
+        M["⚖️ Moderator<br/>Researcher"]
+    end
+
+    Topic["📋 Topic"] --> Debate
+    O <--> P
+    M --> O & P
+    Debate --> Conclusion["📝 Balanced Conclusion"]
+
+    style O fill:#27ae60,stroke:#fff,color:#fff
+    style P fill:#e74c3c,stroke:#fff,color:#fff
+    style M fill:#3498db,stroke:#fff,color:#fff
+```
 
 ## Peer Agent Prompt Template
 
@@ -66,20 +127,6 @@ You are {agent_name}, a peer agent in a collaborative team.
 - Propose solutions that address concerns
 - Vote on final decisions when needed
 
-## Message Format
-
-When speaking to peers:
-
-```json
-{{
-  "from": "{agent_name}",
-  "to": "peer_name" | "all",
-  "type": "analysis|question|response|proposal|vote",
-  "content": "Your message",
-  "references": ["Previous message IDs being addressed"]
-}}
-```
-
 ## Discussion Stages
 
 1. **Opening**: Each peer presents initial analysis
@@ -87,132 +134,30 @@ When speaking to peers:
 3. **Synthesis**: Peers work toward common understanding
 4. **Resolution**: Reach consensus or vote
 
-## Your Perspective
-
-When contributing, focus on:
-[perspective_focus placeholder]
-
 Always be respectful and constructive.
-"""
-```
-
-## Specialized Peer Examples
-
-### Technical Review Panel
-
-```python
-SECURITY_EXPERT = PEER_AGENT_TEMPLATE.format(
-    agent_name="SecurityExpert",
-    expertise_description="""
-    - Application security and vulnerability assessment
-    - OWASP Top 10 and secure coding practices
-    - Authentication and authorization patterns
-    - Data protection and encryption
-    """,
-    peer_descriptions="""
-    - PerformanceExpert: Focuses on speed and efficiency
-    - MaintainabilityExpert: Focuses on code quality
-    - ScalabilityExpert: Focuses on growth capacity
-    """,
-    perspective_focus="""
-    - Security vulnerabilities and risks
-    - Data protection compliance
-    - Attack surface analysis
-    - Security best practices
-    """
-)
-
-PERFORMANCE_EXPERT = PEER_AGENT_TEMPLATE.format(
-    agent_name="PerformanceExpert",
-    expertise_description="""
-    - Application performance optimization
-    - Database query optimization
-    - Caching strategies
-    - Load testing and profiling
-    """,
-    peer_descriptions="""
-    - SecurityExpert: Focuses on security
-    - MaintainabilityExpert: Focuses on code quality
-    - ScalabilityExpert: Focuses on growth capacity
-    """,
-    perspective_focus="""
-    - Response time and latency
-    - Resource utilization
-    - Bottleneck identification
-    - Performance trade-offs
-    """
-)
-```
-
-### Research Debate Panel
-
-```python
-OPTIMIST_RESEARCHER = """
-# Identity
-
-You are OptimistResearcher, focusing on opportunities and positive outcomes.
-
-## Role in Discussion
-- Highlight potential benefits
-- Identify opportunities
-- Counter overly pessimistic views
-- Propose optimistic scenarios with evidence
-
-## Debate Style
-- Present evidence for positive outcomes
-- Acknowledge risks but emphasize mitigation
-- Look for silver linings in challenges
-- Support proposals that maximize upside
-
-## Balance
-While optimistic, remain grounded in evidence.
-Acknowledge valid concerns from pessimist peer.
-"""
-
-PESSIMIST_RESEARCHER = """
-# Identity
-
-You are PessimistResearcher, focusing on risks and potential problems.
-
-## Role in Discussion
-- Identify potential risks and downsides
-- Play devil's advocate
-- Challenge optimistic assumptions
-- Propose risk mitigation strategies
-
-## Debate Style
-- Present evidence for potential problems
-- Stress-test optimistic scenarios
-- Ensure risks are fully considered
-- Support proposals that minimize downside
-
-## Balance
-While cautious, remain constructive.
-Acknowledge valid opportunities from optimist peer.
-"""
-
-MODERATOR_RESEARCHER = """
-# Identity
-
-You are ModeratorResearcher, facilitating balanced discussion.
-
-## Role in Discussion
-- Ensure both perspectives are heard
-- Summarize key points from each side
-- Identify areas of agreement
-- Guide toward balanced conclusion
-
-## Facilitation Style
-- Ask probing questions to both sides
-- Highlight common ground
-- Propose synthesis of views
-- Call for consensus when appropriate
 """
 ```
 
 ## Implementation
 
 ### AutoGen Group Chat
+
+```mermaid
+sequenceDiagram
+    participant SE as Security Expert
+    participant PE as Performance Expert
+    participant ME as Maintainability Expert
+
+    Note over SE,ME: Code Review Discussion
+
+    SE->>PE: I found SQL injection risk
+    PE->>SE: How does the fix affect query performance?
+    SE->>ME: Here's my suggested fix
+    ME->>SE: Let me check if it follows our patterns
+    ME->>PE: The fix is clean, minimal impact
+    PE->>SE: Agree, performance hit is acceptable
+    SE->>ME: Let's finalize the review
+```
 
 ```python
 from autogen import AssistantAgent, GroupChat, GroupChatManager
@@ -268,6 +213,29 @@ security_expert.initiate_chat(
 
 ### Message Bus Implementation
 
+```mermaid
+flowchart TB
+    subgraph Agents["Peer Agents"]
+        A["Agent A"]
+        B["Agent B"]
+        C["Agent C"]
+    end
+
+    subgraph Bus["📫 Message Bus"]
+        Q["Queue"]
+        H["History"]
+    end
+
+    A --> |send| Q
+    B --> |send| Q
+    C --> |send| Q
+
+    Q --> |receive| A & B & C
+    Q --> |log| H
+
+    style Q fill:#f39c12,stroke:#fff,color:#fff
+```
+
 ```python
 from dataclasses import dataclass
 from typing import List, Optional
@@ -307,12 +275,6 @@ class MessageBus:
                 if message.recipient in self.queues:
                     self.queues[message.recipient].put(message)
 
-    def receive(self, agent_id: str, timeout: float = 5.0) -> Optional[PeerMessage]:
-        try:
-            return self.queues[agent_id].get(timeout=timeout)
-        except:
-            return None
-
     def get_context(self, limit: int = 10) -> str:
         """Get recent messages as context"""
         recent = self.history[-limit:]
@@ -320,46 +282,29 @@ class MessageBus:
         for msg in recent:
             context += f"**{msg.sender}** → {msg.recipient}: {msg.content}\n\n"
         return context
-
-# Peer Agent with Message Bus
-class PeerAgent:
-    def __init__(self, name: str, prompt: str, bus: MessageBus, llm):
-        self.name = name
-        self.prompt = prompt
-        self.bus = bus
-        self.llm = llm
-        self.bus.register(name)
-
-    async def participate(self):
-        while True:
-            # Check for messages
-            message = self.bus.receive(self.name, timeout=1.0)
-
-            if message:
-                response = await self.respond_to(message)
-                if response:
-                    self.bus.send(response)
-
-    async def respond_to(self, message: PeerMessage) -> Optional[PeerMessage]:
-        context = self.bus.get_context()
-
-        response = await self.llm.complete(
-            self.prompt +
-            f"\n\n{context}\n\nRespond to the latest message:"
-        )
-
-        return PeerMessage(
-            sender=self.name,
-            recipient="all",
-            message_type="response",
-            content=response,
-            references=[message.id]
-        )
 ```
 
 ## Consensus Mechanisms
 
 ### Voting System
+
+```mermaid
+flowchart TB
+    subgraph Voting["🗳️ Voting Process"]
+        V1["Agent A: Option 1"]
+        V2["Agent B: Option 2"]
+        V3["Agent C: Option 1"]
+    end
+
+    Voting --> Tally["📊 Tally"]
+    Tally --> Result{"Result"}
+
+    Result -->|Majority| Winner["✅ Option 1 Wins"]
+    Result -->|Tie| Discussion["💬 More Discussion"]
+
+    style Winner fill:#27ae60,stroke:#fff,color:#fff
+    style Discussion fill:#f39c12,stroke:#fff,color:#fff
+```
 
 ```python
 class VotingSystem:
@@ -400,72 +345,63 @@ class VotingSystem:
 
 ### Consensus Builder
 
-```python
-CONSENSUS_BUILDER_PROMPT = """
-## Consensus Building
+```mermaid
+flowchart TB
+    Discussion["💬 Discussion"] --> Identify["🔍 Identify"]
 
-Given the discussion so far, identify:
+    subgraph Identify["Identify Areas"]
+        Agree["✅ Agreements"]
+        Disagree["❌ Disagreements"]
+    end
 
-1. **Areas of Agreement**
-   - What do all parties agree on?
+    Identify --> Compromise["🤝 Propose Compromise"]
+    Compromise --> Final["📋 Final Recommendation"]
 
-2. **Areas of Disagreement**
-   - What are the sticking points?
-
-3. **Proposed Compromise**
-   - How can we address everyone's concerns?
-
-4. **Final Recommendation**
-   - What is the balanced conclusion?
-
-Format:
-```json
-{
-  "agreements": ["point 1", "point 2"],
-  "disagreements": [
-    {"issue": "...", "positions": {"AgentA": "...", "AgentB": "..."}}
-  ],
-  "compromise": "Proposed solution that addresses concerns",
-  "recommendation": "Final balanced recommendation",
-  "confidence": 0.85
-}
-```
-"""
+    style Agree fill:#27ae60,stroke:#fff,color:#fff
+    style Disagree fill:#e74c3c,stroke:#fff,color:#fff
+    style Compromise fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ## Use Cases
 
 ### Code Review Panel
 
-```
-SecurityExpert ↔ PerformanceExpert ↔ MaintainabilityExpert
+```mermaid
+flowchart LR
+    subgraph Review["Code Review"]
+        SE["🔒 Security"] <--> PE["⚡ Performance"]
+        PE <--> ME["🔧 Maintainability"]
+        ME <--> SE
+    end
 
-Discussion: Review pull request
-- Each expert reviews from their perspective
-- Cross-examine each other's findings
-- Reach consensus on approval/changes
+    PR["Pull Request"] --> Review
+    Review --> Decision["Approve / Request Changes"]
 ```
 
 ### Investment Committee
 
-```
-BullAnalyst ↔ BearAnalyst ↔ RiskManager
+```mermaid
+flowchart LR
+    subgraph Committee["Investment Committee"]
+        Bull["📈 Bull Analyst"] <--> Bear["📉 Bear Analyst"]
+        Bull <--> RM["⚖️ Risk Manager"]
+        Bear <--> RM
+    end
 
-Discussion: Evaluate investment opportunity
-- Bull presents opportunities
-- Bear presents risks
-- Risk Manager moderates and synthesizes
-- Vote on investment decision
+    Opportunity["Investment Opportunity"] --> Committee
+    Committee --> Decision["Invest / Pass"]
 ```
 
 ### Design Review
 
-```
-UserExperience ↔ TechnicalArchitect ↔ BusinessAnalyst
+```mermaid
+flowchart LR
+    subgraph Review["Design Review"]
+        UX["👤 UX Expert"] <--> TA["🏗️ Tech Architect"]
+        TA <--> BA["💼 Business Analyst"]
+        BA <--> UX
+    end
 
-Discussion: Evaluate feature design
-- UX focuses on user needs
-- Tech focuses on feasibility
-- Business focuses on value
-- Collaborate on optimal design
+    Design["Feature Design"] --> Review
+    Review --> Approval["Optimal Design"]
 ```

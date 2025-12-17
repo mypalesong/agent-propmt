@@ -4,32 +4,105 @@ sidebar_position: 3
 
 # Evaluation
 
+![Evaluation](https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템의 성능을 평가하는 방법입니다.
+
+## Evaluation Workflow
+
+```mermaid
+flowchart TD
+    A[Define Metrics] --> B[Create Test Cases]
+    B --> C[Run Benchmarks]
+    C --> D[Collect Results]
+    D --> E{Evaluation Method}
+
+    E -->|Automated| F[Unit Tests]
+    E -->|LLM-based| G[LLM as Judge]
+    E -->|Human| H[Human Review]
+
+    F --> I[Calculate Scores]
+    G --> I
+    H --> I
+
+    I --> J{Meets Targets?}
+    J -->|Yes| K[Monitor in Production]
+    J -->|No| L[Analyze Failures]
+
+    L --> M{Issue Type}
+    M -->|Accuracy| N[Improve Prompts]
+    M -->|Efficiency| O[Optimize Flow]
+    M -->|Quality| P[Add Examples]
+
+    N --> C
+    O --> C
+    P --> C
+
+    K --> Q[Continuous Evaluation]
+    Q --> R{Quality Drop?}
+    R -->|Yes| S[Alert & Investigate]
+    R -->|No| Q
+
+    style K fill:#e8f5e9
+    style S fill:#ffebee
+```
 
 ## Evaluation Framework
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Evaluation Dimensions                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   ┌───────────┐   ┌───────────┐   ┌───────────┐            │
-│   │ Accuracy  │   │ Efficiency│   │  Quality  │            │
-│   │           │   │           │   │           │            │
-│   │ - Correct │   │ - Tokens  │   │ - Format  │            │
-│   │ - Complete│   │ - Latency │   │ - Clarity │            │
-│   │ - Verified│   │ - Steps   │   │ - Useful  │            │
-│   └───────────┘   └───────────┘   └───────────┘            │
-│                                                              │
-│   ┌───────────┐   ┌───────────┐   ┌───────────┐            │
-│   │ Robustness│   │Coordination│  │   Safety  │            │
-│   │           │   │           │   │           │            │
-│   │ - Errors  │   │ - Handoffs│   │ - No Harm │            │
-│   │ - Edge    │   │ - Context │   │ - Guardrails│          │
-│   │ - Recovery│   │ - Conflict│   │ - Privacy │            │
-│   └───────────┘   └───────────┘   └───────────┘            │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+mindmap
+  root((Evaluation Dimensions))
+    Accuracy
+      Correctness
+        Factual accuracy
+        Logic validity
+      Completeness
+        All requirements met
+        Nothing missing
+      Verification
+        Citations valid
+        Sources reliable
+    Efficiency
+      Token Usage
+        Prompt tokens
+        Completion tokens
+        Cost optimization
+      Latency
+        Response time
+        Time to first token
+      Agent Steps
+        Number of handoffs
+        Tool calls
+    Quality
+      Format
+        Structure correct
+        Schema valid
+      Clarity
+        Easy to understand
+        Well organized
+      Usefulness
+        Actionable
+        Relevant
+    Robustness
+      Error Handling
+        Graceful failures
+        Recovery
+      Edge Cases
+        Boundary conditions
+        Unexpected input
+    Coordination
+      Handoffs
+        Context preserved
+        Smooth transitions
+      Conflict Resolution
+        Disagreements handled
+    Safety
+      No Harm
+        Ethical output
+      Guardrails
+        Constraints enforced
+      Privacy
+        PII protected
 ```
 
 ## Metrics
@@ -299,6 +372,45 @@ BENCHMARK_CASES = [
         "min_accuracy": 0.75
     }
 ]
+```
+
+## Evaluation Process Flow
+
+```mermaid
+stateDiagram-v2
+    [*] --> DefineMetrics
+    DefineMetrics --> CreateTests
+    CreateTests --> RunTests
+    RunTests --> CollectData
+
+    CollectData --> AutoEval: Automated
+    CollectData --> LLMJudge: LLM-based
+    CollectData --> HumanReview: Manual
+
+    AutoEval --> AggregateScores
+    LLMJudge --> AggregateScores
+    HumanReview --> AggregateScores
+
+    AggregateScores --> CheckTargets
+    CheckTargets --> Pass: ✓ Meets Targets
+    CheckTargets --> Fail: ✗ Below Targets
+
+    Pass --> Production
+    Fail --> Analyze
+
+    Analyze --> ImprovePrompts
+    Analyze --> OptimizeFlow
+    Analyze --> AddExamples
+
+    ImprovePrompts --> RunTests
+    OptimizeFlow --> RunTests
+    AddExamples --> RunTests
+
+    Production --> Monitor
+    Monitor --> QualityCheck
+    QualityCheck --> Monitor: Stable
+    QualityCheck --> Alert: Degraded
+    Alert --> Analyze
 ```
 
 ## LLM-as-Judge

@@ -4,23 +4,34 @@ sidebar_position: 4
 
 # Context Management
 
+![Data Flow](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템에서 컨텍스트를 효과적으로 관리합니다.
 
 ## Context Types
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Context Types                            │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Static    │  │  Dynamic    │  │   Shared    │         │
-│  │  Context    │  │  Context    │  │  Context    │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-│        │                │                │                  │
-│   System Info       User Session     Inter-Agent           │
-│   Config Data       Conversation     Communication         │
-│   Base Knowledge    Task Progress    Shared Memory         │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    A[Context Types] --> B[Static Context]
+    A --> C[Dynamic Context]
+    A --> D[Shared Context]
+
+    B --> B1[System Info]
+    B --> B2[Config Data]
+    B --> B3[Base Knowledge]
+
+    C --> C1[User Session]
+    C --> C2[Conversation]
+    C --> C3[Task Progress]
+
+    D --> D1[Inter-Agent<br/>Communication]
+    D --> D2[Shared Memory]
+    D --> D3[Broadcast Events]
+
+    style A fill:#e1f5ff
+    style B fill:#ffe1e1
+    style C fill:#e1ffe1
+    style D fill:#ffe1ff
 ```
 
 ## Context Hierarchy
@@ -98,6 +109,31 @@ TASK_CONTEXT = """
 
 ## Context Window Management
 
+```mermaid
+flowchart LR
+    A[Input Request] --> B[Context Manager]
+    B --> C[System Context<br/>15%]
+    B --> D[Role Context<br/>10%]
+    B --> E[Task Context<br/>25%]
+    B --> F[History<br/>30%]
+    B --> G[Retrieved Docs<br/>15%]
+    B --> H[Buffer<br/>5%]
+
+    C --> I[Combined Context]
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+
+    I --> J[LLM Processing]
+    J --> K[Response<br/>Reserved 4K tokens]
+
+    style B fill:#e1f5ff
+    style I fill:#ffe1e1
+    style J fill:#e1ffe1
+```
+
 ### Token Budgeting
 
 ```python
@@ -161,6 +197,24 @@ class ConversationBuffer:
 ```
 
 ## Inter-Agent Context Sharing
+
+```mermaid
+sequenceDiagram
+    participant A1 as Agent 1
+    participant CB as Context Bus
+    participant SM as Shared Memory
+    participant A2 as Agent 2
+    participant A3 as Agent 3
+
+    A1->>CB: Send Message to A2
+    CB->>A2: Deliver Message
+    A1->>SM: Write Result
+    A2->>SM: Read Result
+    A2->>CB: Broadcast Update
+    CB->>A1: Notify
+    CB->>A3: Notify
+    A3->>SM: Read Shared State
+```
 
 ### Message Passing
 
@@ -239,6 +293,26 @@ class SharedMemory:
 ```
 
 ## RAG Integration
+
+```mermaid
+flowchart TD
+    A[User Query] --> B[Query Embedding]
+    B --> C[Vector Store<br/>Similarity Search]
+    C --> D[Retrieve Top K<br/>Documents]
+    D --> E[Rerank by<br/>Relevance]
+    E --> F[Format for<br/>Context]
+    F --> G[Inject into<br/>Prompt]
+    G --> H[LLM Processing]
+    H --> I[Contextualized<br/>Response]
+
+    J[Document<br/>Collection] --> K[Chunk Documents]
+    K --> L[Generate<br/>Embeddings]
+    L --> C
+
+    style A fill:#e1f5ff
+    style C fill:#ffe1e1
+    style H fill:#e1ffe1
+```
 
 ### Document Context
 

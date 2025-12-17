@@ -4,6 +4,8 @@ sidebar_position: 5
 
 # LangGraph
 
+![LangGraph Framework](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=400&fit=crop&q=80)
+
 LangGraph를 활용한 상태 기반 멀티 에이전트 워크플로우입니다.
 
 ## Overview
@@ -12,6 +14,28 @@ LangGraph는 LangChain 팀에서 개발한 상태 기반 에이전트 그래프 
 
 ```bash
 pip install langgraph langchain-openai
+```
+
+## State Machine Architecture
+
+```mermaid
+stateDiagram-v2
+    [*] --> Researcher
+    Researcher --> Writer: Research Complete
+    Writer --> [*]: Draft Complete
+
+    state Researcher {
+        [*] --> Gathering
+        Gathering --> Analyzing
+        Analyzing --> Synthesizing
+        Synthesizing --> [*]
+    }
+
+    state Writer {
+        [*] --> Drafting
+        Drafting --> Editing
+        Editing --> [*]
+    }
 ```
 
 ## Core Concepts
@@ -100,6 +124,26 @@ app = workflow.compile()
 
 ## Conditional Routing
 
+### Routing Flow
+
+```mermaid
+flowchart TD
+    Start([Start]) --> Supervisor[Supervisor Node]
+    Supervisor --> Route{Route Decision}
+
+    Route -->|Need Research| Researcher[Researcher]
+    Route -->|Need Writing| Writer[Writer]
+    Route -->|Task Complete| End([End])
+
+    Researcher --> Supervisor
+    Writer --> Supervisor
+
+    style Supervisor fill:#9B59B6
+    style Route fill:#F39C12
+    style Researcher fill:#3498DB
+    style Writer fill:#E74C3C
+```
+
 ### Route Function
 
 ```python
@@ -174,6 +218,29 @@ def parse_route(state: AgentState) -> str:
 
 ## Multi-Agent Patterns
 
+### Supervisor Pattern Architecture
+
+```mermaid
+graph TB
+    User[User Input] --> Supervisor[Supervisor Agent]
+
+    Supervisor --> Decision{Delegate To}
+
+    Decision -->|Research Task| Researcher[Researcher]
+    Decision -->|Analysis Task| Analyst[Analyst]
+    Decision -->|Writing Task| Writer[Writer]
+    Decision -->|Complete| End([Done])
+
+    Researcher --> Supervisor
+    Analyst --> Supervisor
+    Writer --> Supervisor
+
+    style Supervisor fill:#9B59B6
+    style Researcher fill:#3498DB
+    style Analyst fill:#27AE60
+    style Writer fill:#E74C3C
+```
+
 ### Supervisor Pattern
 
 ```python
@@ -233,6 +300,24 @@ for worker in ["researcher", "analyst", "writer"]:
 ```
 
 ### Parallel Execution
+
+```mermaid
+flowchart LR
+    Input[Input] --> Split{Split Tasks}
+
+    Split --> Research[Research Node]
+    Split --> Analysis[Analysis Node]
+
+    Research --> Combine[Combine Node]
+    Analysis --> Combine
+
+    Combine --> Output[Final Output]
+
+    style Split fill:#F39C12
+    style Research fill:#3498DB
+    style Analysis fill:#27AE60
+    style Combine fill:#9B59B6
+```
 
 ```python
 from langgraph.graph import StateGraph
@@ -360,6 +445,26 @@ workflow.add_edge("tools", "agent")
 ## Complete Example
 
 ### Research & Writing Workflow
+
+```mermaid
+flowchart LR
+    Start([Start]) --> Research[Research Node]
+    Research --> Outline[Outline Node]
+    Outline --> Write[Write Node]
+    Write --> Edit[Edit Node]
+    Edit --> End([Complete])
+
+    Research -.->|research| State[(State)]
+    Outline -.->|outline| State
+    Write -.->|draft| State
+    Edit -.->|final| State
+
+    style Research fill:#3498DB
+    style Outline fill:#27AE60
+    style Write fill:#E74C3C
+    style Edit fill:#F39C12
+    style State fill:#95A5A6
+```
 
 ```python
 from langgraph.graph import StateGraph, END

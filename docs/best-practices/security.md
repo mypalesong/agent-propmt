@@ -4,38 +4,80 @@ sidebar_position: 4
 
 # Security
 
+![Security](https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템의 보안 고려사항입니다.
+
+## Security Validation Flow
+
+```mermaid
+flowchart TD
+    A[User Input] --> B[Input Sanitization]
+    B --> C{Injection Detected?}
+    C -->|Yes| D[Reject Request]
+    C -->|No| E[Process Request]
+
+    E --> F[Agent Processing]
+    F --> G[Tool Execution]
+    G --> H{Permission Check}
+    H -->|Denied| I[Block Action]
+    H -->|Allowed| J[Execute Tool]
+
+    J --> K[Generate Response]
+    K --> L[Output Filter]
+    L --> M{Contains PII?}
+    M -->|Yes| N[Redact Sensitive Data]
+    M -->|No| O[Validate Output]
+
+    N --> O
+    O --> P{Safe to Send?}
+    P -->|Yes| Q[Return Response]
+    P -->|No| R[Block & Log]
+
+    D --> S[Log Security Event]
+    I --> S
+    R --> S
+
+    style D fill:#ffebee
+    style I fill:#ffebee
+    style R fill:#ffebee
+    style Q fill:#e8f5e9
+```
 
 ## Security Threats
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Security Threat Model                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌───────────────────┐     ┌───────────────────┐           │
-│  │  Prompt Injection │     │  Data Leakage     │           │
-│  │                   │     │                   │           │
-│  │  Malicious input  │     │  Sensitive info   │           │
-│  │  overrides system │     │  in responses     │           │
-│  └───────────────────┘     └───────────────────┘           │
-│                                                              │
-│  ┌───────────────────┐     ┌───────────────────┐           │
-│  │  Unauthorized     │     │  Tool Misuse      │           │
-│  │  Actions          │     │                   │           │
-│  │                   │     │  Dangerous tool   │           │
-│  │  Agents doing     │     │  calls            │           │
-│  │  forbidden tasks  │     │                   │           │
-│  └───────────────────┘     └───────────────────┘           │
-│                                                              │
-│  ┌───────────────────┐     ┌───────────────────┐           │
-│  │  Agent Hijacking  │     │  Resource Abuse   │           │
-│  │                   │     │                   │           │
-│  │  Malicious agent  │     │  Excessive API    │           │
-│  │  behavior         │     │  or compute usage │           │
-│  └───────────────────┘     └───────────────────┘           │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+mindmap
+  root((Security Threats))
+    Prompt Injection
+      Malicious input
+      System override attempts
+      Instruction manipulation
+      Delimiter bypass
+    Data Leakage
+      PII exposure
+      API keys revealed
+      System prompts leaked
+      Sensitive data in output
+    Unauthorized Actions
+      Permission bypass
+      Forbidden operations
+      Privilege escalation
+      Scope violations
+    Tool Misuse
+      Dangerous commands
+      File system abuse
+      Network attacks
+      Code injection
+    Agent Hijacking
+      Behavior manipulation
+      Goal subversion
+      Malicious delegation
+    Resource Abuse
+      Excessive API calls
+      Token exhaustion
+      Rate limit bypass
+      DoS attacks
 ```
 
 ## Prompt Injection Prevention
@@ -350,6 +392,47 @@ class ResourceMonitor:
         limit = self.limits.get(agent_id, float('inf'))
         used = self.token_usage[agent_id]
         return max(0, limit - used)
+```
+
+## Security Layers
+
+```mermaid
+graph TB
+    subgraph "Layer 1: Input Security"
+        A1[Sanitization] --> A2[Injection Detection]
+        A2 --> A3[Format Validation]
+    end
+
+    subgraph "Layer 2: Access Control"
+        B1[Permission Check] --> B2[Role Verification]
+        B2 --> B3[Scope Enforcement]
+    end
+
+    subgraph "Layer 3: Execution Security"
+        C1[Tool Guards] --> C2[Sandboxing]
+        C2 --> C3[Resource Limits]
+    end
+
+    subgraph "Layer 4: Output Security"
+        D1[PII Detection] --> D2[Data Redaction]
+        D2 --> D3[Content Filtering]
+    end
+
+    subgraph "Layer 5: Monitoring"
+        E1[Audit Logging] --> E2[Anomaly Detection]
+        E2 --> E3[Alert System]
+    end
+
+    A3 --> B1
+    B3 --> C1
+    C3 --> D1
+    D3 --> E1
+
+    style A1 fill:#e3f2fd
+    style B1 fill:#f3e5f5
+    style C1 fill:#e8f5e9
+    style D1 fill:#fff3e0
+    style E1 fill:#fce4ec
 ```
 
 ## Security Prompts

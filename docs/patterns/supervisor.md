@@ -6,32 +6,51 @@ sidebar_position: 2
 
 감독자가 작업자 에이전트들을 관리하고 품질을 보장하는 패턴입니다.
 
+![Supervisor Pattern](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop&q=80)
+
 ## Pattern Overview
 
-```
-              ┌────────────────────────┐
-              │      Supervisor        │
-              │  (Quality Control)     │
-              └───────────┬────────────┘
-                          │
-           ┌──────────────┼──────────────┐
-           │              │              │
-           ▼              ▼              ▼
-    ┌────────────┐ ┌────────────┐ ┌────────────┐
-    │  Worker 1  │ │  Worker 2  │ │  Worker 3  │
-    │            │ │            │ │            │
-    │   Output   │ │   Output   │ │   Output   │
-    └─────┬──────┘ └──────┬─────┘ └─────┬──────┘
-          │               │             │
-          └───────────────┼─────────────┘
-                          │
-              ┌───────────▼───────────┐
-              │      Supervisor       │
-              │    (Review & Merge)   │
-              └───────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Phase1["📋 Distribution Phase"]
+        S1["🎯 Supervisor"]
+        W1["👷 Worker 1"]
+        W2["👷 Worker 2"]
+        W3["👷 Worker 3"]
+    end
+
+    subgraph Phase2["✅ Review Phase"]
+        S2["🎯 Supervisor<br/>(Review & Merge)"]
+    end
+
+    S1 --> W1 & W2 & W3
+    W1 & W2 & W3 --> |Outputs| S2
+
+    style S1 fill:#e74c3c,stroke:#fff,color:#fff
+    style S2 fill:#e74c3c,stroke:#fff,color:#fff
+    style W1 fill:#3498db,stroke:#fff,color:#fff
+    style W2 fill:#3498db,stroke:#fff,color:#fff
+    style W3 fill:#3498db,stroke:#fff,color:#fff
 ```
 
 ## When to Use
+
+```mermaid
+mindmap
+  root((Supervisor<br/>Pattern))
+    Quality Control
+      Output review
+      Standards enforcement
+      Consistency check
+    Multiple Workers
+      Parallel execution
+      Independent tasks
+      Result validation
+    Iterative Improvement
+      Feedback loops
+      Revision cycles
+      Continuous refinement
+```
 
 - 출력 품질 보장이 중요할 때
 - 복수의 독립적인 작업을 수행할 때
@@ -100,57 +119,57 @@ For each worker output, evaluate:
 ### Minimum Threshold
 - All scores must be ≥ 3 to pass
 - If any score < 3, request revision
-
-## Revision Request Format
-
-```json
-{
-  "worker": "worker_name",
-  "scores": {
-    "accuracy": 2,
-    "completeness": 4,
-    "quality": 3
-  },
-  "feedback": {
-    "issues": ["List of specific issues"],
-    "suggestions": ["How to improve"],
-    "must_fix": ["Required changes"]
-  },
-  "action": "revise"
-}
-```
-
-## Approval Format
-
-```json
-{
-  "worker": "worker_name",
-  "scores": {
-    "accuracy": 5,
-    "completeness": 4,
-    "quality": 4
-  },
-  "feedback": {
-    "strengths": ["What was done well"],
-    "suggestions": ["Optional improvements"]
-  },
-  "action": "approve"
-}
-```
-
-## Final Integration
-
-After all workers are approved:
-1. Combine outputs coherently
-2. Resolve any conflicts
-3. Ensure consistent formatting
-4. Add executive summary
 """
+```
+
+## Review Workflow
+
+```mermaid
+sequenceDiagram
+    participant S as Supervisor
+    participant W as Worker
+    participant Q as Quality Check
+
+    S->>W: Assign Task
+    W->>W: Execute Task
+    W-->>S: Submit Output
+
+    S->>Q: Evaluate Output
+    Q-->>S: Scores & Feedback
+
+    alt All Scores >= 3
+        S->>S: ✅ Approve
+    else Any Score < 3
+        S->>W: Request Revision
+        W->>W: Revise
+        W-->>S: Resubmit
+    end
+
+    S->>S: Integrate Results
 ```
 
 ## Implementation
 
 ### LangGraph Implementation
+
+```mermaid
+stateDiagram-v2
+    [*] --> Supervisor
+    Supervisor --> Researcher : assign
+    Supervisor --> Analyst : assign
+    Supervisor --> Writer : assign
+
+    Researcher --> Review
+    Analyst --> Review
+    Writer --> Review
+
+    Review --> Researcher : revise needed
+    Review --> Analyst : revise needed
+    Review --> Writer : revise needed
+
+    Review --> Finalize : all approved
+    Finalize --> [*]
+```
 
 ```python
 from langgraph.graph import StateGraph, END
@@ -202,49 +221,12 @@ def supervisor_review(state: SupervisorState, worker: str) -> SupervisorState:
             state["approved"].append(worker)
 
     return state
-
-def worker_node(state: SupervisorState, worker_type: str) -> SupervisorState:
-    """Execute worker agent"""
-    task = state["task"]
-    previous_feedback = state["reviews"].get(worker_type, {}).get("feedback")
-
-    worker_prompt = get_worker_prompt(worker_type)
-
-    if previous_feedback:
-        worker_prompt += f"\n\nPrevious feedback to address:\n{previous_feedback}"
-
-    output = workers[worker_type].invoke(task)
-    state["worker_outputs"][worker_type] = output
-
-    return state
-
-def finalize_node(state: SupervisorState) -> SupervisorState:
-    """Integrate all approved outputs"""
-    outputs = state["worker_outputs"]
-
-    final = llm.invoke(
-        SUPERVISOR_PROMPT +
-        f"\n\nIntegrate these approved outputs:\n{outputs}\n\nFinal output:"
-    )
-
-    return {"final_output": final}
-
-# Build workflow
-workflow = StateGraph(SupervisorState)
-workflow.add_node("supervisor", supervisor_node)
-workflow.add_node("researcher", lambda s: worker_node(s, "researcher"))
-workflow.add_node("analyst", lambda s: worker_node(s, "analyst"))
-workflow.add_node("writer", lambda s: worker_node(s, "writer"))
-workflow.add_node("finalize", finalize_node)
-
-workflow.set_entry_point("supervisor")
-workflow.add_conditional_edges("supervisor", supervisor_route)
 ```
 
 ### AutoGen Implementation
 
 ```python
-from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
+from autogen import AssistantAgent, GroupChat, GroupChatManager
 
 # Supervisor Agent
 supervisor = AssistantAgent(
@@ -282,21 +264,7 @@ group_chat = GroupChat(
 
 manager = GroupChatManager(
     groupchat=group_chat,
-    llm_config=llm_config,
-    system_message="""
-    Manage the conversation flow:
-    1. Supervisor assigns tasks to workers
-    2. Workers complete and submit
-    3. Supervisor reviews and provides feedback
-    4. Repeat until all approved
-    5. Supervisor integrates final output
-    """
-)
-
-# Execute
-result = supervisor.initiate_chat(
-    manager,
-    message="Complete this task: Research AI trends and create a report"
+    llm_config=llm_config
 )
 ```
 
@@ -304,38 +272,32 @@ result = supervisor.initiate_chat(
 
 ### Rubric-Based Evaluation
 
-```python
-QUALITY_RUBRIC = """
-## Evaluation Rubric
+```mermaid
+flowchart LR
+    subgraph Rubric["📊 Quality Rubric"]
+        R["Research<br/>Quality"]
+        A["Analysis<br/>Depth"]
+        W["Writing<br/>Quality"]
+    end
 
-### Research Quality
-| Score | Criteria |
-|-------|----------|
-| 5 | Multiple credible sources, comprehensive coverage |
-| 4 | Good sources, covers main points |
-| 3 | Adequate sources, basic coverage |
-| 2 | Limited sources, gaps in coverage |
-| 1 | Unreliable sources, poor coverage |
+    subgraph Scores["Score Range"]
+        S5["⭐⭐⭐⭐⭐ Exceptional"]
+        S4["⭐⭐⭐⭐ Good"]
+        S3["⭐⭐⭐ Acceptable"]
+        S2["⭐⭐ Needs Work"]
+        S1["⭐ Poor"]
+    end
 
-### Analysis Depth
-| Score | Criteria |
-|-------|----------|
-| 5 | Deep insights, novel connections |
-| 4 | Meaningful analysis, good insights |
-| 3 | Basic analysis, expected insights |
-| 2 | Surface-level analysis |
-| 1 | No meaningful analysis |
-
-### Writing Quality
-| Score | Criteria |
-|-------|----------|
-| 5 | Exceptional clarity, perfect structure |
-| 4 | Clear and well-organized |
-| 3 | Readable, adequate structure |
-| 2 | Unclear in places, weak structure |
-| 1 | Confusing, poor structure |
-"""
+    R & A & W --> Scores
 ```
+
+| Score | Research | Analysis | Writing |
+|-------|----------|----------|---------|
+| **5** | Multiple credible sources | Deep insights, novel connections | Exceptional clarity |
+| **4** | Good sources, main points | Meaningful analysis | Clear and organized |
+| **3** | Adequate sources | Basic analysis | Readable |
+| **2** | Limited sources | Surface-level | Unclear in places |
+| **1** | Unreliable sources | No meaningful analysis | Confusing |
 
 ### Automated Checks
 
@@ -367,15 +329,6 @@ class QualityChecker:
             "message": f"Sources cited: {len(urls)}"
         }
 
-    def check_structure(self, output: str) -> dict:
-        headings = re.findall(r'^#+\s+.+$', output, re.MULTILINE)
-        return {
-            "check": "structure",
-            "pass": len(headings) >= 3,
-            "value": len(headings),
-            "message": f"Headings found: {len(headings)}"
-        }
-
     def run_all(self, output: str) -> dict:
         results = [check(output) for check in self.checks]
         passed = all(r["pass"] for r in results)
@@ -386,6 +339,24 @@ class QualityChecker:
 ```
 
 ## Iteration Management
+
+```mermaid
+flowchart TB
+    Submit["📤 Submit Output"] --> Review["🔍 Review"]
+    Review --> Score{"Score >= 3?"}
+
+    Score -->|Yes| Approve["✅ Approved"]
+    Score -->|No| Check{"Iteration < Max?"}
+
+    Check -->|Yes| Feedback["💬 Provide Feedback"]
+    Feedback --> Revise["✏️ Revise"]
+    Revise --> Submit
+
+    Check -->|No| ForceApprove["⚠️ Force Approve"]
+
+    style Approve fill:#27ae60,stroke:#fff,color:#fff
+    style ForceApprove fill:#f39c12,stroke:#fff,color:#fff
+```
 
 ```python
 class IterationManager:
@@ -404,13 +375,6 @@ class IterationManager:
 
         return True
 
-    def record_iteration(self, worker: str, review: dict):
-        self.history.append({
-            "worker": worker,
-            "review": review,
-            "timestamp": datetime.now()
-        })
-
     def get_improvement_trend(self, worker: str) -> str:
         history = [h for h in self.history if h["worker"] == worker]
         if len(history) < 2:
@@ -428,46 +392,34 @@ class IterationManager:
 
 ### Code Review Supervisor
 
-```python
-CODE_REVIEW_SUPERVISOR = """
-You supervise a team of code reviewers.
+```mermaid
+flowchart TB
+    PR["📝 Pull Request"] --> S["🎯 Code Review Supervisor"]
 
-## Workers
-- SecurityReviewer: Checks for vulnerabilities
-- PerformanceReviewer: Checks for performance issues
-- StyleReviewer: Checks code style and conventions
+    S --> Security["🔒 Security Reviewer"]
+    S --> Performance["⚡ Performance Reviewer"]
+    S --> Style["✨ Style Reviewer"]
 
-## Review Process
-1. Assign PR to all reviewers
-2. Collect their feedback
-3. Evaluate severity of issues
-4. Decide: Approve, Request Changes, or Need Discussion
-5. Compile consolidated review
+    Security & Performance & Style --> S
 
-## Severity Levels
-- CRITICAL: Block merge, must fix
-- HIGH: Should fix before merge
-- MEDIUM: Consider fixing
-- LOW: Optional improvement
-"""
+    S --> Decision{"Decision"}
+    Decision -->|All Pass| Approve["✅ Approve"]
+    Decision -->|Issues Found| Changes["🔄 Request Changes"]
+
+    style S fill:#e74c3c,stroke:#fff,color:#fff
+    style Approve fill:#27ae60,stroke:#fff,color:#fff
+    style Changes fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ### Document Review Supervisor
 
-```python
-DOCUMENT_REVIEW_SUPERVISOR = """
-You supervise document creation and review.
+```mermaid
+flowchart LR
+    Draft["📄 Draft"] --> Writer["✍️ Writer"]
+    Writer --> Fact["🔍 Fact Checker"]
+    Fact --> Editor["✏️ Editor"]
+    Editor --> Supervisor["🎯 Supervisor"]
+    Supervisor --> Final["📑 Final Document"]
 
-## Workers
-- ContentWriter: Creates initial draft
-- FactChecker: Verifies facts and claims
-- Editor: Improves clarity and style
-
-## Review Process
-1. Writer creates draft
-2. FactChecker verifies claims
-3. Editor improves prose
-4. You review for consistency
-5. Final approval or revision cycle
-"""
+    style Supervisor fill:#e74c3c,stroke:#fff,color:#fff
 ```

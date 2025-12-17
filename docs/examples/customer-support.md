@@ -4,30 +4,91 @@ sidebar_position: 3
 
 # Customer Support Agent
 
+![Customer Support Header](https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&h=400&fit=crop&q=80)
+
 고객 지원을 위한 멀티 에이전트 시스템입니다.
 
 ## System Overview
 
+```mermaid
+graph TB
+    Customer[Customer] --> Triage[Triage Agent]
+
+    Triage --> Sales[Sales Agent]
+    Triage --> Support[Support Agent]
+    Triage --> Billing[Billing Agent]
+    Triage --> Escalation[Escalation Agent]
+
+    Sales --> Resolution[Resolution]
+    Support --> Resolution
+    Billing --> Resolution
+    Escalation --> Resolution
+
+    Sales -.-> ST[Product Info<br/>Pricing<br/>Demos]
+    Support -.-> SuT[Troubleshoot<br/>Bug Reports<br/>How-To]
+    Billing -.-> BT[Payments<br/>Refunds<br/>Subscriptions]
+    Escalation -.-> ET[VIP Support<br/>Complex Issues<br/>Complaints]
+
+    style Customer fill:#e3f2fd
+    style Triage fill:#fff4e1
+    style Sales fill:#e8f5e9
+    style Support fill:#f3e5f5
+    style Billing fill:#ffe0b2
+    style Escalation fill:#ffcdd2
+    style Resolution fill:#c8e6c9
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                  Customer Support System                         │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  Customer ──► Triage Agent                                       │
-│                    │                                              │
-│          ┌─────────┼─────────┐─────────┐                        │
-│          ▼         ▼         ▼         ▼                        │
-│     ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐                │
-│     │ Sales  │ │Support │ │Billing │ │Escalate│                │
-│     │ Agent  │ │ Agent  │ │ Agent  │ │ Agent  │                │
-│     └────────┘ └────────┘ └────────┘ └────────┘                │
-│          │         │         │         │                        │
-│          └─────────┴─────────┴─────────┘                        │
-│                         │                                        │
-│                         ▼                                        │
-│                   Resolution                                     │
-│                                                                   │
-└─────────────────────────────────────────────────────────────────┘
+
+## Support Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Customer
+    participant T as Triage
+    participant S as Specialist
+    participant R as Resolution
+
+    C->>T: Submit Inquiry
+    T->>T: Analyze Issue
+    T->>T: Determine Category
+
+    alt Simple FAQ
+        T->>C: Direct Answer
+    else Needs Specialist
+        T->>S: Route to Specialist
+        S->>S: Handle Issue
+        S->>R: Resolve
+        R->>C: Solution
+    end
+
+    Note over T,S: Context Maintained<br/>Throughout Conversation
+```
+
+## Routing Logic
+
+```mermaid
+flowchart TD
+    A[Customer Message] --> B{Issue Type?}
+
+    B -->|Product Question| C[Sales Agent]
+    B -->|Technical Issue| D[Support Agent]
+    B -->|Payment Issue| E[Billing Agent]
+    B -->|Complex/VIP| F[Escalation Agent]
+    B -->|Simple FAQ| G[Triage Answers]
+
+    C --> H{Resolved?}
+    D --> H
+    E --> H
+    F --> H
+    G --> I[Close Ticket]
+
+    H -->|Yes| I
+    H -->|No| J{Escalate?}
+    J -->|Yes| F
+    J -->|No| K[Continue with Agent]
+
+    style A fill:#e3f2fd
+    style I fill:#c8e6c9
+    style F fill:#ffcdd2
 ```
 
 ## Agent Prompts
@@ -239,6 +300,37 @@ You are the Support Agent, resolving technical issues.
 """
 ```
 
+## Troubleshooting Decision Tree
+
+```mermaid
+flowchart TD
+    A[Technical Issue] --> B{Known Issue?}
+    B -->|Yes| C[Apply Standard Fix]
+    B -->|No| D[Gather Details]
+
+    D --> E{Can Diagnose?}
+    E -->|Yes| F[Provide Solution]
+    E -->|No| G[Check Logs]
+
+    G --> H{Found Root Cause?}
+    H -->|Yes| F
+    H -->|No| I[Escalate to Engineering]
+
+    C --> J{Fixed?}
+    F --> J
+
+    J -->|Yes| K[Document & Close]
+    J -->|No| L[Try Alternative]
+
+    L --> M{Resolved?}
+    M -->|Yes| K
+    M -->|No| I
+
+    style A fill:#e3f2fd
+    style K fill:#c8e6c9
+    style I fill:#ffe0b2
+```
+
 ### Billing Agent
 
 ```python
@@ -297,6 +389,34 @@ You are the Billing Agent, handling payment and subscription matters.
 }
 ```
 """
+```
+
+## Refund Decision Flow
+
+```mermaid
+flowchart TD
+    A[Refund Request] --> B{Within 7 Days?}
+    B -->|Yes| C[Full Refund<br/>No Questions]
+    B -->|No| D{Within 30 Days?}
+
+    D -->|Yes| E{Valid Reason?}
+    D -->|No| F{Enterprise Customer?}
+
+    E -->|Yes| G[Partial Refund]
+    E -->|No| H[Offer Credit]
+
+    F -->|Yes| I[Contact Account Manager]
+    F -->|No| H
+
+    C --> J[Process Refund]
+    G --> J
+    H --> K[Apply Credit]
+    I --> L[Escalate]
+
+    style A fill:#e3f2fd
+    style C fill:#c8e6c9
+    style G fill:#c8e6c9
+    style H fill:#fff9c4
 ```
 
 ### Escalation Agent
@@ -367,6 +487,24 @@ For cancellation requests:
 }
 ```
 """
+```
+
+## De-escalation Process
+
+```mermaid
+stateDiagram-v2
+    [*] --> AngryCustomer
+    AngryCustomer --> Acknowledge: Listen & Validate
+    Acknowledge --> Apologize: Show Empathy
+    Apologize --> Investigate: Understand Issue
+    Investigate --> Resolve: Offer Solution
+    Resolve --> Compensate: Provide Value
+    Compensate --> FollowUp: Ensure Satisfaction
+    FollowUp --> [*]: Issue Resolved
+
+    Investigate --> Escalate: Cannot Resolve
+    Escalate --> Manager: Needs Authority
+    Manager --> Resolve
 ```
 
 ## Implementation
@@ -463,6 +601,78 @@ context = {
 
 result = handle_customer("I can't log into my account!", context)
 print(f"[{result['agent']}]: {result['response']}")
+```
+
+## Agent Handoff Flow
+
+```mermaid
+graph LR
+    T[Triage] --> S[Sales]
+    T --> Su[Support]
+    T --> B[Billing]
+    T --> E[Escalation]
+
+    S -.-> Su
+    S -.-> B
+    S -.-> T
+
+    Su -.-> S
+    Su -.-> B
+    Su -.-> E
+
+    B -.-> S
+    B -.-> Su
+    B -.-> E
+
+    E -.-> T
+
+    style T fill:#fff4e1
+    style S fill:#e8f5e9
+    style Su fill:#f3e5f5
+    style B fill:#ffe0b2
+    style E fill:#ffcdd2
+```
+
+## Conversation Example
+
+```mermaid
+sequenceDiagram
+    participant C as Customer
+    participant T as Triage
+    participant Su as Support
+    participant E as Escalation
+
+    C->>T: "I can't log in!"
+    T->>Su: Transfer to Support
+    Su->>C: "Let me help you troubleshoot..."
+    C->>Su: "Still not working, this is frustrating!"
+    Su->>Su: Detect frustration
+    Su->>E: Transfer to Escalation
+    E->>C: "I apologize for the inconvenience..."
+    E->>E: Investigate & resolve
+    E->>C: "Issue fixed + compensation offered"
+    C->>E: "Thank you!"
+```
+
+## Performance Metrics
+
+```mermaid
+graph TD
+    M[Metrics Dashboard] --> M1[Response Time<br/>Target: < 30s]
+    M --> M2[Resolution Rate<br/>Target: > 80%]
+    M --> M3[CSAT Score<br/>Target: > 4.5/5]
+    M --> M4[Escalation Rate<br/>Target: < 10%]
+
+    M1 --> A[Agent Performance]
+    M2 --> A
+    M3 --> A
+    M4 --> A
+
+    A --> O[Optimize System]
+
+    style M fill:#e3f2fd
+    style A fill:#fff4e1
+    style O fill:#c8e6c9
 ```
 
 ## Metrics to Track

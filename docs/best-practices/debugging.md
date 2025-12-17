@@ -4,31 +4,70 @@ sidebar_position: 2
 
 # Debugging
 
+![Debugging](https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템 디버깅 전략과 기법입니다.
+
+## Debugging Workflow
+
+```mermaid
+flowchart TD
+    A[Issue Detected] --> B{Issue Type?}
+    B -->|Wrong Output| C[Check Prompts]
+    B -->|No Tool Use| D[Review Tool Instructions]
+    B -->|Slow Response| E[Analyze Trace]
+    B -->|Loop Detected| F[Check Delegation Logic]
+    B -->|Context Lost| G[Inspect Handoffs]
+
+    C --> H[Enable Logging]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I[Collect Traces]
+    I --> J[Visualize Flow]
+    J --> K{Root Cause Found?}
+    K -->|Yes| L[Implement Fix]
+    K -->|No| M[Add Breakpoints]
+    M --> N[Interactive Debug]
+    N --> K
+
+    L --> O[Test Fix]
+    O --> P{Resolved?}
+    P -->|Yes| Q[Deploy]
+    P -->|No| K
+
+    style A fill:#ffebee
+    style Q fill:#e8f5e9
+```
 
 ## Debugging Challenges
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Multi-Agent Debugging Challenges               │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1. Non-Deterministic Outputs                               │
-│     └─ Same input → different outputs                       │
-│                                                              │
-│  2. Complex Interaction Patterns                            │
-│     └─ Agent A → Agent B → Agent C → ?                     │
-│                                                              │
-│  3. State Management                                        │
-│     └─ What's in context? What was lost?                   │
-│                                                              │
-│  4. Tool Failures                                           │
-│     └─ External dependencies, rate limits                   │
-│                                                              │
-│  5. Prompt Drift                                            │
-│     └─ Prompts evolve, behavior changes                    │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+mindmap
+  root((Debugging Challenges))
+    Non-Deterministic
+      Same input, different outputs
+      Temperature settings
+      Model variations
+    Complex Interactions
+      Multi-agent chains
+      Unclear data flow
+      Hard to trace
+    State Management
+      Context size limits
+      Information loss
+      Memory issues
+    Tool Failures
+      External dependencies
+      Rate limits
+      Network errors
+      API changes
+    Prompt Drift
+      Prompts evolve
+      Behavior changes
+      Version control
 ```
 
 ## Logging Strategy
@@ -115,6 +154,29 @@ class TraceViewer:
                 output += f"  Tokens: {event['tokens_used']}\n"
 
         return output
+```
+
+## Agent Interaction Trace
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant R as Router
+    participant A as Agent A
+    participant T as Tools
+    participant B as Agent B
+
+    U->>R: Submit Task
+    R->>A: Delegate with Context
+    A->>T: Call Tool
+    T-->>A: Return Result
+    A->>A: Process Data
+    A->>B: Handoff Context
+    B->>T: Call Tool
+    T-->>B: Return Result
+    B->>U: Final Output
+
+    Note over A,B: Context Preserved
 ```
 
 ## Common Issues & Solutions

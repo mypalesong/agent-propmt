@@ -4,21 +4,47 @@ sidebar_position: 2
 
 # System Prompts
 
+![System Architecture](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템에서 시스템 프롬프트를 효과적으로 설계합니다.
 
 ## System Prompt Structure
 
-```
-┌─────────────────────────────────────┐
-│         System Prompt               │
-├─────────────────────────────────────┤
-│  1. Identity & Role                 │
-│  2. Capabilities & Limitations      │
-│  3. Behavioral Guidelines           │
-│  4. Tool Usage Instructions         │
-│  5. Output Specifications           │
-│  6. Error Handling                  │
-└─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    A[System Prompt] --> B[1. Identity & Role]
+    A --> C[2. Capabilities & Limitations]
+    A --> D[3. Behavioral Guidelines]
+    A --> E[4. Tool Usage Instructions]
+    A --> F[5. Output Specifications]
+    A --> G[6. Error Handling]
+
+    B --> B1[Agent Name]
+    B --> B2[Purpose]
+    B --> B3[Expertise]
+
+    C --> C1[What it can do]
+    C --> C2[What it cannot do]
+
+    D --> D1[Communication Style]
+    D --> D2[Decision Framework]
+
+    E --> E1[Available Tools]
+    E --> E2[Tool Selection Criteria]
+
+    F --> F1[Format Type]
+    F --> F2[Language Requirements]
+
+    G --> G1[Uncertainty Handling]
+    G --> G2[Failure Recovery]
+
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#fff4e1
+    style D fill:#fff4e1
+    style E fill:#fff4e1
+    style F fill:#fff4e1
+    style G fill:#fff4e1
 ```
 
 ## Complete System Prompt Template
@@ -339,6 +365,26 @@ relevant context or I'll base my review on common patterns."
 ```
 
 ## Multi-Agent Coordination Prompts
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Supervisor
+    participant ResearchBot
+    participant CodeBot
+    participant WriterBot
+
+    User->>Supervisor: Complex Task
+    Supervisor->>Supervisor: Analyze & Break Down
+    Supervisor->>ResearchBot: Subtask 1: Research
+    ResearchBot->>Supervisor: Research Results
+    Supervisor->>CodeBot: Subtask 2: Generate Code
+    CodeBot->>Supervisor: Code Output
+    Supervisor->>WriterBot: Subtask 3: Documentation
+    WriterBot->>Supervisor: Documentation
+    Supervisor->>Supervisor: Aggregate & Validate
+    Supervisor->>User: Complete Result
+```
 
 ### Supervisor Agent
 

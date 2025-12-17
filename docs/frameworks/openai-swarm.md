@@ -4,6 +4,8 @@ sidebar_position: 4
 
 # OpenAI Swarm
 
+![OpenAI Swarm Framework](https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=400&fit=crop&q=80)
+
 OpenAI Swarm을 활용한 경량 멀티 에이전트 오케스트레이션입니다.
 
 ## Overview
@@ -17,6 +19,38 @@ pip install git+https://github.com/openai/swarm.git
 :::warning
 Swarm은 프로덕션용이 아닌 교육/실험용 프레임워크입니다.
 :::
+
+## Handoff Architecture
+
+```mermaid
+graph TB
+    User[User Request] --> Triage[Triage Agent]
+
+    Triage --> Route{Determine<br/>Department}
+
+    Route -->|Product Questions| Sales[Sales Agent]
+    Route -->|Technical Issues| Support[Support Agent]
+    Route -->|Payment/Refunds| Billing[Billing Agent]
+
+    Sales -.->|transfer_to_support| Support
+    Sales -.->|transfer_to_billing| Billing
+
+    Support -.->|transfer_to_sales| Sales
+    Support -.->|transfer_to_billing| Billing
+
+    Billing -.->|transfer_to_sales| Sales
+    Billing -.->|transfer_to_support| Support
+
+    Sales --> Response[Response to User]
+    Support --> Response
+    Billing --> Response
+
+    style Triage fill:#9B59B6
+    style Route fill:#F39C12
+    style Sales fill:#3498DB
+    style Support fill:#27AE60
+    style Billing fill:#E74C3C
+```
 
 ## Core Concepts
 
@@ -72,6 +106,22 @@ billing_agent = Agent(
 ```
 
 ### Handoff Functions
+
+```mermaid
+flowchart LR
+    Agent1[Sales Agent] -->|transfer_to_support| Agent2[Support Agent]
+    Agent1 -->|transfer_to_billing| Agent3[Billing Agent]
+
+    Agent2 -->|transfer_to_sales| Agent1
+    Agent2 -->|transfer_to_billing| Agent3
+
+    Agent3 -->|transfer_to_sales| Agent1
+    Agent3 -->|transfer_to_support| Agent2
+
+    style Agent1 fill:#3498DB
+    style Agent2 fill:#27AE60
+    style Agent3 fill:#E74C3C
+```
 
 ```python
 def transfer_to_sales():
@@ -171,6 +221,24 @@ agent = Agent(
 
 ## Functions (Tools)
 
+### Function Execution Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Agent
+    participant Function
+    participant Context
+
+    User->>Agent: User Message
+    Agent->>Agent: Analyze Request
+    Agent->>Function: Call Function
+    Function->>Context: Access Context Variables
+    Context->>Function: Return Context Data
+    Function->>Agent: Return Result
+    Agent->>User: Response with Result
+```
+
 ### Defining Functions
 
 ```python
@@ -250,6 +318,31 @@ agent = Agent(
 
 ## Context Variables
 
+### Context Flow
+
+```mermaid
+graph LR
+    Start[Initial Context] --> Agent1[Triage Agent]
+    Agent1 --> Context1[(Context)]
+
+    Context1 --> Agent2[Sales Agent]
+    Agent2 --> Update1[Update Context]
+    Update1 --> Context2[(Updated Context)]
+
+    Context2 --> Agent3[Support Agent]
+    Agent3 --> Update2[Update Context]
+    Update2 --> Context3[(Final Context)]
+
+    Context3 --> End[End with Context]
+
+    style Context1 fill:#95A5A6
+    style Context2 fill:#95A5A6
+    style Context3 fill:#95A5A6
+    style Agent1 fill:#9B59B6
+    style Agent2 fill:#3498DB
+    style Agent3 fill:#27AE60
+```
+
 ### Passing Context
 
 ```python
@@ -296,6 +389,46 @@ def process_login(email: str, context_variables: dict):
 ```
 
 ## Complete Example
+
+### Customer Service Swarm Architecture
+
+```mermaid
+graph TB
+    Customer[Customer] --> Triage[Triage Agent]
+
+    Triage --> Determine{Route Based on<br/>Request Type}
+
+    Determine -->|Product| Sales[Sales Agent]
+    Determine -->|Technical| Support[Support Agent]
+    Determine -->|Payment| Billing[Billing Agent]
+
+    Sales --> SalesFn{Functions}
+    SalesFn --> GetProduct[get_product_info]
+    SalesFn --> CheckAvail[check_availability]
+    SalesFn --> CreateOrder[create_order]
+
+    Support --> SupportFn{Functions}
+    SupportFn --> LookupError[lookup_error]
+    SupportFn --> GetSteps[get_troubleshooting_steps]
+    SupportFn --> CreateTicket[create_ticket]
+
+    Billing --> BillingFn{Functions}
+    BillingFn --> GetInvoice[get_invoice]
+    BillingFn --> ProcessRefund[process_refund]
+    BillingFn --> UpdatePayment[update_payment_method]
+
+    Sales -.->|Handoff| Support
+    Sales -.->|Handoff| Billing
+    Support -.->|Handoff| Sales
+    Support -.->|Handoff| Billing
+    Billing -.->|Handoff| Sales
+    Billing -.->|Handoff| Support
+
+    style Triage fill:#9B59B6
+    style Sales fill:#3498DB
+    style Support fill:#27AE60
+    style Billing fill:#E74C3C
+```
 
 ### Customer Service Swarm
 

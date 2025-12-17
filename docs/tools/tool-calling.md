@@ -4,22 +4,51 @@ sidebar_position: 2
 
 # Tool Calling
 
+![Tool Calling Header](https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=1200&h=400&fit=crop&q=80)
+
 에이전트가 도구를 효과적으로 호출하도록 프롬프트를 설계합니다.
 
 ## Tool Calling Flow
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Agent
+    participant Tool
+
+    User->>Agent: Request
+    Agent->>Agent: Analyze Request
+    Agent->>Agent: Decide Tool Needed
+    Agent->>Tool: Execute Tool
+    Tool-->>Agent: Tool Result
+    Agent->>Agent: Process Result
+    Agent-->>User: Response
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│    User     │────►│    Agent    │────►│    Tool     │
-│   Request   │     │  (Decides)  │     │ (Executes)  │
-└─────────────┘     └──────┬──────┘     └──────┬──────┘
-                           │                    │
-                           │◄───────────────────┘
-                           │   Tool Result
-                           ▼
-                    ┌──────────────┐
-                    │   Response   │
-                    └──────────────┘
+
+## Decision Process
+
+```mermaid
+flowchart TD
+    A[User Request] --> B{Need External Info?}
+    B -->|Yes| C{What Type?}
+    B -->|No| Z[Answer Directly]
+
+    C -->|Current Data| D[search_web]
+    C -->|File Content| E[read_file]
+    C -->|Calculation| F[calculate]
+    C -->|Code Execution| G[run_code]
+
+    D --> H[Execute Tool]
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I[Process Result]
+    I --> J[Generate Response]
+
+    style A fill:#e3f2fd
+    style Z fill:#c8e6c9
+    style J fill:#c8e6c9
 ```
 
 ## Prompting for Tool Use
@@ -94,6 +123,20 @@ Before choosing a tool, ask:
 
 ### ReAct Pattern
 
+```mermaid
+flowchart LR
+    Q[Question] --> T1[Thought]
+    T1 --> A[Action]
+    A --> O[Observation]
+    O --> T2[Thought]
+    T2 --> D{Done?}
+    D -->|No| A
+    D -->|Yes| F[Final Answer]
+
+    style Q fill:#e3f2fd
+    style F fill:#c8e6c9
+```
+
 ```python
 REACT_PROMPT = """
 You are an AI assistant that solves problems step by step.
@@ -158,6 +201,25 @@ Important:
 
 ### Parallel Tool Calls
 
+```mermaid
+flowchart TD
+    A[Request] --> B{Multiple Independent<br/>Tasks?}
+    B -->|Yes| C[Tool 1]
+    B -->|Yes| D[Tool 2]
+    B -->|Yes| E[Tool 3]
+    B -->|No| F[Single Tool]
+
+    C --> G[Combine Results]
+    D --> G
+    E --> G
+    F --> H[Process Result]
+    G --> H
+    H --> I[Response]
+
+    style A fill:#e3f2fd
+    style I fill:#c8e6c9
+```
+
 ```python
 PARALLEL_TOOLS_PROMPT = """
 You can call multiple tools simultaneously when they are independent.
@@ -188,6 +250,29 @@ Don't use parallel calls when:
 ```
 
 ## Error Handling
+
+```mermaid
+flowchart TD
+    A[Tool Call] --> B{Success?}
+    B -->|Yes| C[Process Result]
+    B -->|No| D[Analyze Error]
+
+    D --> E{Recoverable?}
+    E -->|Yes| F[Retry with<br/>Corrected Input]
+    E -->|Maybe| G[Try Alternative<br/>Tool]
+    E -->|No| H[Inform User]
+
+    F --> A
+    G --> I[Alternative Tool]
+    I --> B
+
+    C --> J[Return Result]
+    H --> J
+
+    style A fill:#e3f2fd
+    style J fill:#c8e6c9
+    style H fill:#ffcdd2
+```
 
 ### Tool Failure Prompt
 
@@ -248,6 +333,29 @@ I recommend checking [specific sources]."
 
 ### Maintaining Context
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Agent
+    participant Context
+    participant Tool
+
+    User->>Agent: Question about Tesla
+    Agent->>Context: Store: Topic=Tesla
+    Agent->>Tool: Search Tesla info
+    Tool-->>Agent: Results
+
+    User->>Agent: How about last quarter?
+    Agent->>Context: Retrieve: Topic=Tesla
+    Agent->>Tool: Search Tesla Q3 (using context)
+    Tool-->>Agent: Results
+
+    User->>Agent: And their competitor?
+    Agent->>Context: Retrieve: Topic=Tesla, Industry=EV
+    Agent->>Tool: Search Rivian info
+    Tool-->>Agent: Results
+```
+
 ```python
 CONTEXT_TOOL_PROMPT = """
 ## Using Conversation Context in Tool Calls
@@ -273,6 +381,25 @@ User: "And their main competitor?"
 ```
 
 ### Tool Call Chaining
+
+```mermaid
+flowchart LR
+    A[Information<br/>Gathering] --> B[Data<br/>Processing]
+    B --> C[Synthesis]
+
+    A --> A1[Search]
+    A --> A2[Extract]
+
+    B --> B1[Analyze]
+    B --> B2[Calculate]
+
+    C --> C1[Combine]
+    C --> C2[Format]
+
+    style A fill:#e3f2fd
+    style B fill:#fff4e1
+    style C fill:#c8e6c9
+```
 
 ```python
 CHAINING_PROMPT = """

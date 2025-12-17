@@ -4,6 +4,8 @@ sidebar_position: 3
 
 # CrewAI
 
+![CrewAI Framework](https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop&q=80)
+
 CrewAI를 활용한 멀티 에이전트 프롬프트 설계입니다.
 
 ## Overview
@@ -12,6 +14,45 @@ CrewAI는 역할 기반의 자율 AI 에이전트 프레임워크입니다.
 
 ```bash
 pip install crewai crewai-tools
+```
+
+## Crew Architecture
+
+```mermaid
+graph TB
+    Input[Task Input] --> Crew[Crew]
+
+    Crew --> Process{Process Type}
+
+    Process -->|Sequential| Seq[Sequential Execution]
+    Process -->|Hierarchical| Hier[Hierarchical with Manager]
+
+    Seq --> Agent1[Agent 1: Task 1]
+    Seq --> Agent2[Agent 2: Task 2]
+    Seq --> Agent3[Agent 3: Task 3]
+
+    Agent1 --> Agent2
+    Agent2 --> Agent3
+
+    Hier --> Manager[Manager Agent]
+    Manager --> Delegate{Delegate}
+
+    Delegate --> A1[Agent 1]
+    Delegate --> A2[Agent 2]
+    Delegate --> A3[Agent 3]
+
+    A1 --> Manager
+    A2 --> Manager
+    A3 --> Manager
+
+    Agent3 --> Output[Final Output]
+    Manager --> Output
+
+    style Crew fill:#9B59B6
+    style Manager fill:#F39C12
+    style Agent1 fill:#3498DB
+    style Agent2 fill:#27AE60
+    style Agent3 fill:#E74C3C
 ```
 
 ## Core Components
@@ -181,6 +222,28 @@ WRITER_AGENT = Agent(
 
 ## Advanced Task Configuration
 
+### Task Context Flow
+
+```mermaid
+flowchart LR
+    Input[Input Topic] --> Task1[Research Task]
+
+    Task1 --> Output1[Research Output]
+    Output1 --> Task2[Analysis Task]
+
+    Output1 -.->|Context| Task3[Writing Task]
+    Task2 --> Output2[Analysis Output]
+    Output2 -.->|Context| Task3
+
+    Task3 --> Final[Final Article]
+
+    style Task1 fill:#3498DB
+    style Task2 fill:#27AE60
+    style Task3 fill:#E74C3C
+    style Output1 fill:#95A5A6
+    style Output2 fill:#95A5A6
+```
+
 ### Task with Context
 
 ```python
@@ -237,6 +300,35 @@ task = Task(
 
 ## Process Types
 
+### Sequential vs Hierarchical
+
+```mermaid
+graph LR
+    subgraph Sequential["Sequential Process"]
+        direction LR
+        S1[Researcher] --> S2[Analyst]
+        S2 --> S3[Writer]
+    end
+
+    subgraph Hierarchical["Hierarchical Process"]
+        direction TB
+        M[Manager] --> H1[Researcher]
+        M --> H2[Analyst]
+        M --> H3[Writer]
+        H1 --> M
+        H2 --> M
+        H3 --> M
+    end
+
+    style S1 fill:#3498DB
+    style S2 fill:#27AE60
+    style S3 fill:#E74C3C
+    style M fill:#9B59B6
+    style H1 fill:#3498DB
+    style H2 fill:#27AE60
+    style H3 fill:#E74C3C
+```
+
 ### Sequential Process
 
 ```python
@@ -276,6 +368,33 @@ crew = Crew(
 ```
 
 ## Tools Integration
+
+### Tools Architecture
+
+```mermaid
+graph TB
+    Agent[Agent] --> Tools{Available Tools}
+
+    Tools --> Search[SerperDevTool]
+    Tools --> Scrape[WebsiteSearchTool]
+    Tools --> File[FileReadTool]
+    Tools --> Dir[DirectoryReadTool]
+    Tools --> Code[CodeInterpreterTool]
+    Tools --> Custom[Custom Tools]
+
+    Search --> Result[Tool Results]
+    Scrape --> Result
+    File --> Result
+    Dir --> Result
+    Code --> Result
+    Custom --> Result
+
+    Result --> Agent
+
+    style Agent fill:#9B59B6
+    style Tools fill:#F39C12
+    style Result fill:#95A5A6
+```
 
 ### Built-in Tools
 
@@ -375,6 +494,28 @@ crew = Crew(
 ```
 
 ## Example: Content Creation Crew
+
+### Content Creation Workflow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Crew
+    participant Researcher
+    participant Writer
+
+    User->>Crew: kickoff(topic: "AI Agents")
+    Crew->>Researcher: Execute Research Task
+    Researcher->>Researcher: Search & Gather Info
+    Researcher->>Crew: Return Research Report
+
+    Crew->>Writer: Execute Writing Task
+    Note over Writer: Has access to<br/>research context
+    Writer->>Writer: Create Blog Post
+    Writer->>Crew: Return Blog Post
+
+    Crew->>User: Final Result
+```
 
 ```python
 from crewai import Agent, Task, Crew, Process

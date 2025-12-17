@@ -6,27 +6,45 @@ sidebar_position: 1
 
 중앙 조율자가 에이전트들을 관리하는 패턴입니다.
 
+![Orchestrator Pattern](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=400&fit=crop&q=80)
+
 ## Pattern Overview
 
-```
-                    ┌─────────────────┐
-                    │   User Input    │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │  Orchestrator   │
-                    │    Agent        │
-                    └────────┬────────┘
-                             │
-        ┌────────────────────┼────────────────────┐
-        │                    │                    │
-┌───────▼───────┐  ┌─────────▼─────────┐  ┌──────▼──────┐
-│   Agent A     │  │     Agent B       │  │   Agent C   │
-│  (Research)   │  │    (Analysis)     │  │  (Writing)  │
-└───────────────┘  └───────────────────┘  └─────────────┘
+```mermaid
+flowchart TB
+    U["👤 User Input"] --> O["🎯 Orchestrator Agent"]
+
+    O --> A["🔍 Agent A<br/>(Research)"]
+    O --> B["📊 Agent B<br/>(Analysis)"]
+    O --> C["✍️ Agent C<br/>(Writing)"]
+
+    A & B & C --> R["📄 Combined Result"]
+    R --> U
+
+    style O fill:#e74c3c,stroke:#fff,color:#fff
+    style A fill:#3498db,stroke:#fff,color:#fff
+    style B fill:#27ae60,stroke:#fff,color:#fff
+    style C fill:#9b59b6,stroke:#fff,color:#fff
 ```
 
 ## When to Use
+
+```mermaid
+mindmap
+  root((Orchestrator<br/>Pattern))
+    Complex Tasks
+      Multiple subtasks
+      Dependencies
+      Integration needed
+    Central Control
+      Single coordinator
+      Task distribution
+      Result aggregation
+    Quality Assurance
+      Output validation
+      Error handling
+      Retry logic
+```
 
 - 복잡한 작업을 여러 하위 작업으로 분해할 때
 - 작업 간 의존성을 관리해야 할 때
@@ -115,47 +133,29 @@ When delegating tasks:
       "input": {"query": "...", "depth": "deep"},
       "dependencies": [],
       "priority": 1
-    },
-    {
-      "id": "task_2",
-      "agent": "AnalysisAgent",
-      "input": {"data": "{{task_1.output}}", "analysis_type": "..."},
-      "dependencies": ["task_1"],
-      "priority": 2
     }
   ]
 }
 ```
-
-When providing final response:
-
-```json
-{
-  "status": "complete",
-  "summary": "Brief summary of what was accomplished",
-  "results": {
-    "main_findings": [...],
-    "supporting_data": {...}
-  },
-  "agent_contributions": {
-    "ResearchAgent": "...",
-    "AnalysisAgent": "...",
-    "WriterAgent": "..."
-  }
-}
-```
-
-## Error Handling
-
-- If an agent fails, retry once with modified input
-- If retry fails, attempt alternative approach
-- If no alternative exists, report partial results with explanation
 """
 ```
 
 ## Implementation
 
 ### LangGraph Implementation
+
+```mermaid
+stateDiagram-v2
+    [*] --> Orchestrator
+    Orchestrator --> ResearchAgent : needs research
+    Orchestrator --> AnalysisAgent : needs analysis
+    Orchestrator --> WriterAgent : needs writing
+    ResearchAgent --> Orchestrator
+    AnalysisAgent --> Orchestrator
+    WriterAgent --> Orchestrator
+    Orchestrator --> Integrate : all tasks done
+    Integrate --> [*]
+```
 
 ```python
 from langgraph.graph import StateGraph, END
@@ -220,6 +220,23 @@ app = workflow.compile()
 
 ### CrewAI Implementation
 
+```mermaid
+sequenceDiagram
+    participant O as Orchestrator
+    participant R as Researcher
+    participant A as Analyst
+    participant W as Writer
+
+    O->>O: Create execution plan
+    O->>R: Assign research task
+    R-->>O: Research results
+    O->>A: Assign analysis task
+    A-->>O: Analysis results
+    O->>W: Assign writing task
+    W-->>O: Final content
+    O->>O: Integrate & deliver
+```
+
 ```python
 from crewai import Agent, Task, Crew, Process
 
@@ -252,19 +269,6 @@ writer = Agent(
     backstory="Professional writer with technical background"
 )
 
-# Define orchestration task
-orchestration_task = Task(
-    description="""
-    Analyze the incoming request and create an execution plan.
-    Delegate subtasks to appropriate team members.
-    Monitor progress and integrate results.
-
-    Request: {request}
-    """,
-    expected_output="Comprehensive result integrating all team outputs",
-    agent=orchestrator
-)
-
 # Create crew with hierarchical process
 crew = Crew(
     agents=[orchestrator, researcher, analyst, writer],
@@ -280,6 +284,34 @@ result = crew.kickoff(inputs={"request": "Research AI trends and create a report
 ## Orchestrator Variations
 
 ### Planning-First Orchestrator
+
+```mermaid
+flowchart TB
+    subgraph Planning["📋 Planning Phase"]
+        P1["Understand scope"]
+        P2["Identify subtasks"]
+        P3["Map dependencies"]
+        P4["Create timeline"]
+    end
+
+    subgraph Execution["⚡ Execution Phase"]
+        E1["Delegate tasks"]
+        E2["Monitor progress"]
+        E3["Adjust plan"]
+    end
+
+    subgraph Validation["✅ Validation Phase"]
+        V1["Verify outputs"]
+        V2["Check consistency"]
+        V3["Identify gaps"]
+    end
+
+    Planning --> Execution --> Validation
+
+    style Planning fill:#3498db,stroke:#fff,color:#fff
+    style Execution fill:#27ae60,stroke:#fff,color:#fff
+    style Validation fill:#9b59b6,stroke:#fff,color:#fff
+```
 
 ```python
 PLANNING_ORCHESTRATOR = """
@@ -308,30 +340,51 @@ After all tasks complete:
 
 ### Reactive Orchestrator
 
-```python
-REACTIVE_ORCHESTRATOR = """
-Respond dynamically to task requirements:
+```mermaid
+flowchart TB
+    Start["🚀 Start"] --> Task["Receive Task"]
+    Task --> Delegate["Delegate One Task"]
+    Delegate --> Wait["Wait for Result"]
+    Wait --> Eval{"Evaluate"}
 
-## Approach
-- Start with minimal planning
-- Delegate one task at a time
-- Adjust strategy based on results
-- Iterate until complete
+    Eval -->|More needed| Adjust["Adjust Strategy"]
+    Adjust --> Delegate
 
-## Decision Points
-After each agent response:
-1. Is more information needed?
-2. Should a different agent handle this?
-3. Is the task complete?
+    Eval -->|Complete| Done["✅ Done"]
 
-## Adaptability
-- Change agents mid-task if needed
-- Retry with different parameters
-- Escalate complex issues
-"""
+    style Start fill:#3498db,stroke:#fff,color:#fff
+    style Done fill:#27ae60,stroke:#fff,color:#fff
 ```
 
 ## Error Handling Strategies
+
+```mermaid
+flowchart TB
+    Error["❌ Error Occurred"] --> L1{"Level 1:<br/>Retry?"}
+
+    L1 -->|Yes| Retry["Retry Same Input"]
+    Retry --> Success1{"Success?"}
+    Success1 -->|No| L2{"Level 2:<br/>Modify?"}
+    Success1 -->|Yes| Done["✅ Success"]
+
+    L2 -->|Yes| Modify["Simplify Task"]
+    Modify --> Success2{"Success?"}
+    Success2 -->|No| L3{"Level 3:<br/>Alternate?"}
+    Success2 -->|Yes| Done
+
+    L3 -->|Yes| Alternate["Try Different Agent"]
+    Alternate --> Success3{"Success?"}
+    Success3 -->|No| Partial["📄 Partial Results"]
+    Success3 -->|Yes| Done
+
+    L1 -->|Max retries| L2
+    L2 -->|No options| L3
+    L3 -->|No alternatives| Partial
+
+    style Error fill:#e74c3c,stroke:#fff,color:#fff
+    style Done fill:#27ae60,stroke:#fff,color:#fff
+    style Partial fill:#f39c12,stroke:#fff,color:#fff
+```
 
 ```python
 ERROR_HANDLING = """
@@ -363,6 +416,14 @@ If all else fails:
 ```
 
 ## Metrics and Monitoring
+
+```mermaid
+xychart-beta
+    title "Agent Performance Metrics"
+    x-axis [Research, Analysis, Writing, Integration]
+    y-axis "Success Rate (%)" 0 --> 100
+    bar [95, 88, 92, 97]
+```
 
 ```python
 class OrchestratorMetrics:

@@ -4,34 +4,72 @@ sidebar_position: 2
 
 # Code Review Agent
 
+![Code Review Header](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=400&fit=crop&q=80)
+
 자동화된 코드 리뷰 멀티 에이전트 시스템입니다.
 
 ## Architecture
 
+```mermaid
+graph TB
+    PR[Pull Request] --> Coordinator[Coordinator Agent]
+
+    Coordinator --> Security[Security Reviewer]
+    Coordinator --> Quality[Quality Reviewer]
+    Coordinator --> Style[Style Reviewer]
+
+    Security --> |Security Issues| Summarizer[Summarizer Agent]
+    Quality --> |Quality Issues| Summarizer
+    Style --> |Style Issues| Summarizer
+
+    Summarizer --> Report[Final Review Report]
+
+    Security -.-> ST[OWASP Checks<br/>Vulnerability Scan<br/>Auth Validation]
+    Quality -.-> QT[SOLID Principles<br/>Performance<br/>Testability]
+    Style -.-> SyT[PEP 8<br/>Naming<br/>Documentation]
+
+    style PR fill:#e3f2fd
+    style Coordinator fill:#fff4e1
+    style Security fill:#ffcdd2
+    style Quality fill:#f3e5f5
+    style Style fill:#e8f5e9
+    style Summarizer fill:#ffe0b2
+    style Report fill:#c8e6c9
 ```
-┌────────────────────────────────────────────────────────────────┐
-│                    Code Review System                           │
-├────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  Pull Request ──► Coordinator                                   │
-│                       │                                          │
-│       ┌───────────────┼───────────────┐                         │
-│       ▼               ▼               ▼                         │
-│  ┌─────────┐    ┌─────────┐    ┌─────────┐                     │
-│  │Security │    │Quality  │    │ Style   │                     │
-│  │Reviewer │    │Reviewer │    │Reviewer │                     │
-│  └────┬────┘    └────┬────┘    └────┬────┘                     │
-│       │              │              │                           │
-│       └──────────────┼──────────────┘                           │
-│                      ▼                                          │
-│               ┌──────────────┐                                  │
-│               │  Summarizer  │                                  │
-│               └──────────────┘                                  │
-│                      │                                          │
-│                      ▼                                          │
-│               Final Review Report                               │
-│                                                                  │
-└────────────────────────────────────────────────────────────────┘
+
+## Review Workflow
+
+```mermaid
+sequenceDiagram
+    participant PR as Pull Request
+    participant C as Coordinator
+    participant Sec as Security Reviewer
+    participant Qual as Quality Reviewer
+    participant Sty as Style Reviewer
+    participant Sum as Summarizer
+
+    PR->>C: New PR Submitted
+    C->>C: Analyze Changes
+
+    par Parallel Reviews
+        C->>Sec: Review Security
+        C->>Qual: Review Quality
+        C->>Sty: Review Style
+    end
+
+    Sec->>Sec: Check Vulnerabilities
+    Qual->>Qual: Check Best Practices
+    Sty->>Sty: Check Code Style
+
+    Sec-->>Sum: Security Findings
+    Qual-->>Sum: Quality Findings
+    Sty-->>Sum: Style Findings
+
+    Sum->>Sum: Aggregate Issues
+    Sum->>Sum: Prioritize Findings
+    Sum->>Sum: Generate Report
+
+    Sum-->>PR: Post Review Comment
 ```
 
 ## Agent Prompts
@@ -149,6 +187,34 @@ from markupsafe import escape
 return f"<div>{escape(user_input)}</div>"
 ```
 """
+```
+
+## Security Review Process
+
+```mermaid
+flowchart TD
+    A[Code Changes] --> B[Scan for Patterns]
+    B --> C{Vulnerability Found?}
+
+    C -->|SQL Injection| D[Critical: Block]
+    C -->|XSS| D
+    C -->|Auth Issue| E[High: Review]
+    C -->|Weak Crypto| F[Medium: Suggest]
+    C -->|None| G[Approve]
+
+    D --> H[Provide Fix]
+    E --> H
+    F --> I[Provide Guidance]
+
+    H --> J[Add to Report]
+    I --> J
+    G --> J
+
+    style A fill:#e3f2fd
+    style D fill:#ffcdd2
+    style E fill:#ffe0b2
+    style F fill:#fff9c4
+    style G fill:#c8e6c9
 ```
 
 ### Quality Reviewer
@@ -325,6 +391,29 @@ Reviewed by: SecurityReviewer, QualityReviewer, StyleReviewer
 """
 ```
 
+## Decision Matrix
+
+```mermaid
+flowchart TD
+    A[All Reviews Complete] --> B{Any Critical<br/>Issues?}
+    B -->|Yes| C[REQUEST_CHANGES]
+    B -->|No| D{Multiple High<br/>Priority?}
+
+    D -->|Yes| C
+    D -->|No| E{Quality Issues<br/>Only?}
+
+    E -->|Yes| F[APPROVE with Comments]
+    E -->|No| G{Style Issues<br/>Only?}
+
+    G -->|Yes| F
+    G -->|No| H[APPROVE]
+
+    style A fill:#e3f2fd
+    style C fill:#ffcdd2
+    style F fill:#fff9c4
+    style H fill:#c8e6c9
+```
+
 ## Implementation
 
 ```python
@@ -424,6 +513,27 @@ workflow.add_edge("style", "summarizer")
 workflow.add_edge("summarizer", END)
 
 code_review_agent = workflow.compile()
+```
+
+## Parallel Execution
+
+```mermaid
+gantt
+    title Code Review Timeline
+    dateFormat  X
+    axisFormat %S
+
+    section Coordinator
+    Analyze PR           :0, 2s
+
+    section Parallel Reviews
+    Security Review      :2, 5s
+    Quality Review       :2, 5s
+    Style Review         :2, 5s
+
+    section Summarizer
+    Aggregate Findings   :7, 2s
+    Generate Report      :9, 2s
 ```
 
 ## Usage with GitHub

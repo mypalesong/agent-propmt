@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # LangChain
 
+![LangChain Framework](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop&q=80)
+
 LangChain을 활용한 멀티 에이전트 프롬프트 설계입니다.
 
 ## Overview
@@ -12,6 +14,30 @@ LangChain은 LLM 애플리케이션 개발을 위한 프레임워크로, 에이�
 
 ```bash
 pip install langchain langchain-openai langgraph
+```
+
+## Architecture
+
+```mermaid
+graph TB
+    User[User Input] --> Agent[Agent Executor]
+    Agent --> LLM[Language Model]
+    Agent --> Tools[Tools]
+
+    Tools --> Search[Search Tool]
+    Tools --> Read[Read Tool]
+    Tools --> Custom[Custom Tools]
+
+    LLM --> Decision{Need Tool?}
+    Decision -->|Yes| Tools
+    Decision -->|No| Response[Final Response]
+    Tools --> LLM
+
+    Response --> User
+
+    style Agent fill:#4A90E2
+    style LLM fill:#F39C12
+    style Tools fill:#27AE60
 ```
 
 ## Agent Prompt Structure
@@ -152,6 +178,22 @@ analysis_tool = StructuredTool.from_function(
 
 ## Multi-Agent with LangGraph
 
+### Multi-Agent Workflow
+
+```mermaid
+flowchart LR
+    Start([Start]) --> Researcher[Researcher Agent]
+    Researcher --> |Research Complete| Writer[Writer Agent]
+    Writer --> |Draft Ready| End([End])
+
+    Researcher -.->|Messages| State[(Agent State)]
+    Writer -.->|Messages| State
+
+    style Researcher fill:#3498DB
+    style Writer fill:#E74C3C
+    style State fill:#95A5A6
+```
+
 ### State Graph Agent
 
 ```python
@@ -214,6 +256,21 @@ result = app.invoke({
 ```
 
 ### Conditional Routing
+
+```mermaid
+flowchart TD
+    Supervisor[Supervisor] --> Router{Route Decision}
+    Router -->|Need Research| Researcher[Researcher]
+    Router -->|Ready to Write| Writer[Writer]
+    Router -->|Task Complete| End([End])
+
+    Researcher --> Supervisor
+    Writer --> Supervisor
+
+    style Supervisor fill:#9B59B6
+    style Researcher fill:#3498DB
+    style Writer fill:#E74C3C
+```
 
 ```python
 def route_agent(state: AgentState) -> str:
@@ -304,6 +361,23 @@ Answer based on the context provided.
 
 ## Chains and LCEL
 
+### Chain Architecture
+
+```mermaid
+graph LR
+    Input[Input] --> Research[Research Chain]
+    Research --> Write[Writing Chain]
+    Write --> Output[Output]
+
+    Research --> LLM1[LLM]
+    Write --> LLM2[LLM]
+
+    style Research fill:#3498DB
+    style Write fill:#E74C3C
+    style LLM1 fill:#F39C12
+    style LLM2 fill:#F39C12
+```
+
 ### LangChain Expression Language
 
 ```python
@@ -333,6 +407,26 @@ result = writing_chain.invoke("AI trends in 2024")
 ```
 
 ### Parallel Execution
+
+```mermaid
+flowchart TD
+    Input[Input Topic] --> Parallel{Parallel Execution}
+
+    Parallel --> Tech[Technical Research]
+    Parallel --> Business[Business Research]
+    Parallel --> Social[Social Research]
+
+    Tech --> Combine[Synthesis Chain]
+    Business --> Combine
+    Social --> Combine
+
+    Combine --> LLM[LLM Synthesis]
+    LLM --> Output[Final Output]
+
+    style Parallel fill:#9B59B6
+    style Combine fill:#27AE60
+    style LLM fill:#F39C12
+```
 
 ```python
 from langchain_core.runnables import RunnableParallel

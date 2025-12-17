@@ -4,23 +4,77 @@ sidebar_position: 3
 
 # Role Definition
 
+![Team Collaboration](https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop&q=80)
+
 에이전트 역할 정의의 핵심 요소와 패턴입니다.
 
 ## Role Definition Framework
 
-```
-┌────────────────────────────────────────────┐
-│              Role Definition               │
-├────────────────────────────────────────────┤
-│  1. Identity (Who)                         │
-│  2. Expertise (What you know)              │
-│  3. Responsibilities (What you do)         │
-│  4. Authority (What you can decide)        │
-│  5. Boundaries (What you cannot do)        │
-└────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A[Role Definition] --> B[1. Identity<br/>Who am I?]
+    A --> C[2. Expertise<br/>What do I know?]
+    A --> D[3. Responsibilities<br/>What do I do?]
+    A --> E[4. Authority<br/>What can I decide?]
+    A --> F[5. Boundaries<br/>What cannot I do?]
+
+    B --> B1[Job Title]
+    B --> B2[Experience Level]
+    B --> B3[Domain Background]
+
+    C --> C1[Technical Skills]
+    C --> C2[Domain Knowledge]
+    C --> C3[Methodologies]
+
+    D --> D1[Core Tasks]
+    D --> D2[Deliverables]
+    D --> D3[Accountabilities]
+
+    E --> E1[Decision Rights]
+    E --> E2[Approval Authority]
+    E --> E3[Autonomy Level]
+
+    F --> F1[Restrictions]
+    F --> F2[Scope Limits]
+    F --> F3[Ethical Constraints]
+
+    style A fill:#e1f5ff
 ```
 
 ## The PERSONA Template
+
+```mermaid
+mindmap
+  root((PERSONA))
+    Profession
+      Job Title
+      Years of Experience
+      Domain
+    Expertise
+      Area 1
+      Area 2
+      Area 3
+    Responsibilities
+      Primary Tasks
+      Deliverables
+      Accountabilities
+    Style
+      Communication Approach
+      Tone
+      Language Level
+    Objectives
+      Goals
+      Success Metrics
+      Priorities
+    No-Go Zones
+      Restrictions
+      Ethical Boundaries
+      Technical Limits
+    Authority
+      Decision Rights
+      Approval Power
+      Delegation Capability
+```
 
 ```python
 PERSONA_TEMPLATE = """
@@ -221,6 +275,22 @@ tech_lead_role = compose_roles(
 ```
 
 ### Role Hierarchies
+
+```mermaid
+flowchart TD
+    A[Executive Agent<br/>Strategic Decisions] --> B[Manager Agent<br/>Coordination]
+    A --> C[Advisor Agent<br/>Consultation]
+    B --> D[Worker Agent A<br/>Execution]
+    B --> E[Worker Agent B<br/>Execution]
+    B --> F[Worker Agent C<br/>Execution]
+
+    style A fill:#ff9999
+    style B fill:#ffcc99
+    style C fill:#99ccff
+    style D fill:#99ff99
+    style E fill:#99ff99
+    style F fill:#99ff99
+```
 
 ```python
 ROLE_HIERARCHY = """

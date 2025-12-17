@@ -4,28 +4,45 @@ sidebar_position: 1
 
 # Tool Definition
 
+![Tools Header](https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=1200&h=400&fit=crop&q=80)
+
 에이전트가 사용할 도구를 정의하는 방법입니다.
 
 ## Tool Anatomy
 
+```mermaid
+graph TB
+    Tool[Tool: search_web]
+    Tool --> Name[Name: search_web]
+    Tool --> Desc[Description: Search the internet for info]
+    Tool --> Params[Parameters]
+    Tool --> Returns[Returns: string]
+
+    Params --> P1[query: string, required<br/>'The search query']
+    Params --> P2[num_results: integer, optional<br/>'Number of results default: 5']
+    Params --> P3[site_filter: string, optional<br/>'Limit to specific domain']
+
+    Returns --> R1['Formatted search results']
+
+    style Tool fill:#e1f5ff
+    style Params fill:#fff4e1
+    style Returns fill:#e8f5e9
 ```
-┌────────────────────────────────────────────────┐
-│                    Tool                        │
-├────────────────────────────────────────────────┤
-│  Name: search_web                              │
-│  Description: Search the internet for info    │
-│                                                │
-│  Parameters:                                   │
-│  ├─ query (string, required)                  │
-│  │   └─ "The search query"                    │
-│  ├─ num_results (integer, optional)           │
-│  │   └─ "Number of results (default: 5)"      │
-│  └─ site_filter (string, optional)            │
-│      └─ "Limit to specific domain"            │
-│                                                │
-│  Returns: string                               │
-│  └─ "Formatted search results"                │
-└────────────────────────────────────────────────┘
+
+## Tool Definition Flow
+
+```mermaid
+flowchart LR
+    A[Define Tool] --> B[Set Name]
+    B --> C[Write Description]
+    C --> D[Define Parameters]
+    D --> E[Set Return Type]
+    E --> F[Implement Function]
+    F --> G[Add Validation]
+    G --> H[Test Tool]
+
+    style A fill:#e3f2fd
+    style H fill:#c8e6c9
 ```
 
 ## OpenAI Function Schema
@@ -149,6 +166,34 @@ search_tool = StructuredTool(
 ```
 
 ## Tool Categories
+
+```mermaid
+graph TD
+    Tools[Tool Categories] --> Info[Information Retrieval]
+    Tools --> Data[Data Operations]
+    Tools --> File[File Operations]
+    Tools --> Code[Code Execution]
+
+    Info --> I1[search_web]
+    Info --> I2[search_academic]
+    Info --> I3[read_webpage]
+
+    Data --> D1[query_database]
+    Data --> D2[analyze_data]
+
+    File --> F1[read_file]
+    File --> F2[write_file]
+    File --> F3[list_directory]
+
+    Code --> C1[run_python]
+    Code --> C2[run_shell]
+
+    style Tools fill:#e1f5ff
+    style Info fill:#fff4e1
+    style Data fill:#f3e5f5
+    style File fill:#e8f5e9
+    style Code fill:#ffe0b2
+```
 
 ### Information Retrieval
 
@@ -276,6 +321,26 @@ def run_shell(command: str) -> str:
 
 ## Tool Description Best Practices
 
+```mermaid
+flowchart TD
+    A[Tool Description] --> B{Is it clear?}
+    B -->|No| C[Add use cases]
+    B -->|Yes| D{Parameters documented?}
+    C --> D
+    D -->|No| E[Add parameter descriptions]
+    D -->|Yes| F{Examples included?}
+    E --> F
+    F -->|No| G[Add examples]
+    F -->|Yes| H{Error cases handled?}
+    G --> H
+    H -->|No| I[Document error cases]
+    H -->|Yes| J[Good Tool Description!]
+    I --> J
+
+    style A fill:#e3f2fd
+    style J fill:#c8e6c9
+```
+
 ### Good Description
 
 ```python
@@ -319,6 +384,24 @@ def calc(a, b, c):
 ```
 
 ## Validation & Error Handling
+
+```mermaid
+sequenceDiagram
+    participant Agent
+    participant Tool
+    participant Validator
+    participant Function
+
+    Agent->>Tool: Call with parameters
+    Tool->>Validator: Validate input
+    alt Invalid input
+        Validator-->>Agent: Return error
+    else Valid input
+        Validator->>Function: Execute
+        Function-->>Tool: Result
+        Tool-->>Agent: Return result
+    end
+```
 
 ```python
 from pydantic import BaseModel, Field, validator

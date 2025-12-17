@@ -4,33 +4,67 @@ sidebar_position: 3
 
 # Model Context Protocol (MCP)
 
+![MCP Header](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=400&fit=crop&q=80)
+
 MCP를 활용한 표준화된 도구 통합입니다.
 
 ## MCP Overview
 
 Model Context Protocol (MCP)은 Anthropic에서 개발한 AI 모델과 외부 도구/데이터 간의 표준 통신 프로토콜입니다.
 
+```mermaid
+graph TB
+    subgraph MCP Architecture
+        Client[AI Model Client]
+        Server[MCP Server]
+
+        Client <-->|MCP Protocol| Server
+
+        Server --> Tools[Tools]
+        Server --> Resources[Resources]
+        Server --> Prompts[Prompts]
+
+        Tools --> T1[search]
+        Tools --> T2[execute]
+        Tools --> T3[analyze]
+
+        Resources --> R1[files]
+        Resources --> R2[database]
+        Resources --> R3[APIs]
+
+        Prompts --> P1[templates]
+        Prompts --> P2[workflows]
+        Prompts --> P3[examples]
+    end
+
+    style Client fill:#e3f2fd
+    style Server fill:#fff4e1
+    style Tools fill:#f3e5f5
+    style Resources fill:#e8f5e9
+    style Prompts fill:#ffe0b2
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        MCP Architecture                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────┐         ┌──────────────┐                  │
-│  │   AI Model   │◄───────►│  MCP Server  │                  │
-│  │   (Client)   │   MCP   │              │                  │
-│  └──────────────┘         └──────┬───────┘                  │
-│                                  │                          │
-│         ┌────────────────────────┼────────────────────┐     │
-│         │                        │                    │     │
-│    ┌────▼────┐            ┌──────▼─────┐      ┌──────▼────┐ │
-│    │  Tools  │            │  Resources │      │  Prompts  │ │
-│    │         │            │            │      │           │ │
-│    │ search  │            │  files     │      │ templates │ │
-│    │ execute │            │  database  │      │ workflows │ │
-│    │ analyze │            │  APIs      │      │ examples  │ │
-│    └─────────┘            └────────────┘      └───────────┘ │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+
+## MCP Communication Flow
+
+```mermaid
+sequenceDiagram
+    participant Client as AI Model
+    participant Server as MCP Server
+    participant Tool as Tool Implementation
+
+    Client->>Server: list_tools()
+    Server-->>Client: Available tools
+
+    Client->>Server: call_tool(name, args)
+    Server->>Tool: Execute
+    Tool-->>Server: Result
+    Server-->>Client: Tool response
+
+    Client->>Server: list_resources()
+    Server-->>Client: Available resources
+
+    Client->>Server: read_resource(uri)
+    Server-->>Client: Resource content
 ```
 
 ## MCP Concepts
@@ -94,6 +128,20 @@ async def main():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+```
+
+### Server Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Initialize
+    Initialize --> Ready: Server Started
+    Ready --> Processing: Tool Call
+    Processing --> Ready: Return Result
+    Ready --> Reading: Resource Request
+    Reading --> Ready: Return Content
+    Ready --> Shutdown: Close Connection
+    Shutdown --> [*]
 ```
 
 ### With Resources
@@ -203,6 +251,20 @@ Focus on:
 
 ### Tool Schema Best Practices
 
+```mermaid
+flowchart TD
+    A[Design Tool] --> B[Clear Name]
+    B --> C[Detailed Description]
+    C --> D[Use Cases]
+    D --> E[Limitations]
+    E --> F[Input Schema]
+    F --> G[Examples]
+    G --> H[Error Handling]
+
+    style A fill:#e3f2fd
+    style H fill:#c8e6c9
+```
+
 ```python
 TOOL_SCHEMA = {
     "name": "query_database",
@@ -288,6 +350,21 @@ ANALYZE_TOOL = Tool(
 
 ## Claude Desktop Integration
 
+```mermaid
+graph LR
+    Claude[Claude Desktop] --> Config[claude_desktop_config.json]
+    Config --> S1[MCP Server 1]
+    Config --> S2[MCP Server 2]
+    Config --> S3[MCP Server N]
+
+    S1 --> Tools1[Tools]
+    S2 --> Tools2[Tools]
+    S3 --> Tools3[Tools]
+
+    style Claude fill:#e3f2fd
+    style Config fill:#fff4e1
+```
+
 ### Configuration
 
 ```json
@@ -367,6 +444,18 @@ You can read from these resources:
 
 ### Dynamic Tool Discovery
 
+```mermaid
+flowchart LR
+    A[Agent Startup] --> B[List Tools]
+    B --> C[List Resources]
+    C --> D[List Prompts]
+    D --> E[Build Agent Prompt]
+    E --> F[Ready to Serve]
+
+    style A fill:#e3f2fd
+    style F fill:#c8e6c9
+```
+
 ```python
 async def build_agent_prompt(mcp_client):
     # Get available tools
@@ -422,6 +511,23 @@ class EverythingServer(Server):
 ```
 
 ### Error Messages
+
+```mermaid
+flowchart TD
+    A[Error Occurs] --> B{Error Type}
+    B -->|Validation| C[Show Expected Format]
+    B -->|Not Found| D[Suggest Alternatives]
+    B -->|Permission| E[Explain Access Rules]
+    B -->|Internal| F[Log & Return Generic]
+
+    C --> G[Return to User]
+    D --> G
+    E --> G
+    F --> G
+
+    style A fill:#ffcdd2
+    style G fill:#c8e6c9
+```
 
 ```python
 # Good: Informative error

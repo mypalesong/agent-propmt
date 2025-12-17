@@ -6,29 +6,58 @@ sidebar_position: 3
 
 다층 구조로 에이전트들을 조직화하는 패턴입니다.
 
+![Hierarchical Organization](https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&h=400&fit=crop&q=80)
+
 ## Pattern Overview
 
-```
-                    ┌─────────────────┐
-                    │   Executive     │
-                    │     Agent       │
-                    └────────┬────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-    ┌───────▼───────┐ ┌──────▼──────┐ ┌──────▼──────┐
-    │   Manager A   │ │  Manager B  │ │  Manager C  │
-    │  (Research)   │ │ (Analysis)  │ │  (Output)   │
-    └───────┬───────┘ └──────┬──────┘ └──────┬──────┘
-            │                │                │
-      ┌─────┴─────┐    ┌─────┴─────┐    ┌─────┴─────┐
-      │           │    │           │    │           │
-   ┌──▼──┐    ┌──▼──┐ ┌▼─┐    ┌──▼──┐ ┌▼─┐    ┌──▼──┐
-   │W1-1 │    │W1-2 │ │W2│    │W2-2 │ │W3│    │W3-2 │
-   └─────┘    └─────┘ └──┘    └─────┘ └──┘    └─────┘
+```mermaid
+flowchart TB
+    E["👔 Executive Agent"]
+
+    subgraph ManagerLevel["Manager Level"]
+        M1["📊 Manager A<br/>(Research)"]
+        M2["📈 Manager B<br/>(Analysis)"]
+        M3["📝 Manager C<br/>(Output)"]
+    end
+
+    subgraph WorkerLevel["Worker Level"]
+        W1["👷 W1-1"]
+        W2["👷 W1-2"]
+        W3["👷 W2-1"]
+        W4["👷 W2-2"]
+        W5["👷 W3-1"]
+        W6["👷 W3-2"]
+    end
+
+    E --> M1 & M2 & M3
+    M1 --> W1 & W2
+    M2 --> W3 & W4
+    M3 --> W5 & W6
+
+    style E fill:#c0392b,stroke:#fff,color:#fff
+    style M1 fill:#e74c3c,stroke:#fff,color:#fff
+    style M2 fill:#e74c3c,stroke:#fff,color:#fff
+    style M3 fill:#e74c3c,stroke:#fff,color:#fff
 ```
 
 ## When to Use
+
+```mermaid
+mindmap
+  root((Hierarchical<br/>Pattern))
+    Large Scale
+      Complex projects
+      Many agents
+      Multiple domains
+    Clear Hierarchy
+      Defined roles
+      Accountability
+      Delegation
+    Scalability
+      Add teams easily
+      Parallel departments
+      Independent units
+```
 
 - 대규모 복잡한 프로젝트
 - 전문 영역별 분리가 필요할 때
@@ -38,6 +67,20 @@ sidebar_position: 3
 ## Level Definitions
 
 ### Executive Level
+
+```mermaid
+flowchart TB
+    subgraph Executive["👔 Executive Level"]
+        E["Executive Agent"]
+        E1["Strategic Planning"]
+        E2["Resource Allocation"]
+        E3["Quality Assurance"]
+    end
+
+    E --> E1 & E2 & E3
+
+    style Executive fill:#c0392b,stroke:#fff,color:#fff
+```
 
 ```python
 EXECUTIVE_PROMPT = """
@@ -73,167 +116,79 @@ in this multi-agent organization.
 - Review manager-level outputs
 - Ensure alignment with objectives
 - Approve final deliverables
-
-## Communication Protocol
-
-When delegating to managers:
-```json
-{
-  "directive": "Clear description of what's needed",
-  "priority": "high|medium|low",
-  "deadline": "timeframe",
-  "constraints": ["Any limitations"],
-  "success_criteria": ["How to measure success"]
-}
-```
-
-When escalation is received:
-1. Assess the issue
-2. Provide guidance
-3. If needed, involve other managers
-4. Document decision rationale
-
-## Decision Framework
-
-For each decision:
-1. Does this align with overall objective?
-2. What are the trade-offs?
-3. Which departments are affected?
-4. What resources are required?
-5. What are the risks?
 """
 ```
 
 ### Manager Level
 
-```python
-MANAGER_PROMPT_TEMPLATE = """
-# Identity
+```mermaid
+flowchart TB
+    subgraph Manager["📊 Manager Level"]
+        M["Department Manager"]
+        M1["Task Management"]
+        M2["Team Coordination"]
+        M3["Quality Control"]
+    end
 
-You are the {department} Manager, responsible for your team's
-performance and deliverables.
+    M --> M1 & M2 & M3
 
-## Reporting Structure
-- Reports to: Executive Agent
-- Direct Reports: {worker_list}
+    E["👔 Executive"] --> M
+    M --> W1["👷 Worker 1"] & W2["👷 Worker 2"]
 
-## Authority
-- Assign tasks to workers
-- Make tactical decisions within scope
-- Escalate strategic issues to Executive
-- Approve worker-level outputs
-
-## Responsibilities
-
-### Task Management
-- Receive directives from Executive
-- Break down into worker tasks
-- Assign and track progress
-- Aggregate worker outputs
-
-### Team Coordination
-- Ensure workers have needed context
-- Facilitate inter-worker communication
-- Resolve worker-level conflicts
-- Provide feedback and coaching
-
-### Quality Control
-- Review worker outputs
-- Request revisions when needed
-- Ensure meets department standards
-- Report progress to Executive
-
-## Escalation Criteria
-
-Escalate to Executive when:
-- Issue affects other departments
-- Resource requirements change significantly
-- Timeline cannot be met
-- Strategic decision needed
-
-## Task Assignment Format
-
-```json
-{{
-  "worker": "worker_name",
-  "task": "task description",
-  "context": "relevant background",
-  "expected_output": "what success looks like",
-  "deadline": "relative timeframe"
-}}
-```
-"""
-
-# Specific Manager Instances
-RESEARCH_MANAGER_PROMPT = MANAGER_PROMPT_TEMPLATE.format(
-    department="Research",
-    worker_list="WebSearcher, DocumentAnalyzer, FactChecker"
-)
-
-ANALYSIS_MANAGER_PROMPT = MANAGER_PROMPT_TEMPLATE.format(
-    department="Analysis",
-    worker_list="DataProcessor, PatternFinder, InsightGenerator"
-)
-
-OUTPUT_MANAGER_PROMPT = MANAGER_PROMPT_TEMPLATE.format(
-    department="Output",
-    worker_list="ContentWriter, Editor, Formatter"
-)
+    style Manager fill:#e74c3c,stroke:#fff,color:#fff
 ```
 
 ### Worker Level
 
-```python
-WORKER_PROMPT_TEMPLATE = """
-# Identity
+```mermaid
+flowchart TB
+    subgraph Worker["👷 Worker Level"]
+        W["Specialized Worker"]
+        W1["Execute Tasks"]
+        W2["Report Progress"]
+        W3["Request Help"]
+    end
 
-You are {worker_name}, a specialized worker in the {department} team.
+    W --> W1 & W2 & W3
 
-## Reporting Structure
-- Reports to: {manager_name}
+    M["📊 Manager"] --> W
 
-## Specialization
-{specialization}
-
-## Responsibilities
-- Execute assigned tasks
-- Report progress to manager
-- Request clarification when needed
-- Flag blockers immediately
-
-## Task Reception
-
-When receiving a task:
-1. Acknowledge receipt
-2. Clarify any ambiguities
-3. Estimate completion time
-4. Execute the task
-5. Submit output for review
-
-## Output Format
-
-```json
-{{
-  "status": "complete|blocked|in_progress",
-  "output": "task result",
-  "notes": "any observations or issues",
-  "time_spent": "duration"
-}}
-```
-
-## Escalation
-
-Escalate to manager when:
-- Task is unclear after clarification
-- Required resources unavailable
-- Unexpected complexity discovered
-- Output quality concerns
-"""
+    style Worker fill:#3498db,stroke:#fff,color:#fff
 ```
 
 ## Implementation
 
 ### LangGraph Hierarchical Implementation
+
+```mermaid
+stateDiagram-v2
+    [*] --> Executive
+    Executive --> ResearchManager
+    Executive --> AnalysisManager
+    Executive --> OutputManager
+
+    ResearchManager --> WebSearcher
+    ResearchManager --> DocAnalyzer
+
+    AnalysisManager --> DataProcessor
+    AnalysisManager --> InsightGenerator
+
+    OutputManager --> Writer
+    OutputManager --> Editor
+
+    WebSearcher --> ResearchManager
+    DocAnalyzer --> ResearchManager
+    DataProcessor --> AnalysisManager
+    InsightGenerator --> AnalysisManager
+    Writer --> OutputManager
+    Editor --> OutputManager
+
+    ResearchManager --> Executive
+    AnalysisManager --> Executive
+    OutputManager --> Executive
+
+    Executive --> [*]
+```
 
 ```python
 from langgraph.graph import StateGraph, END
@@ -268,28 +223,6 @@ def manager_router(state: HierarchicalState) -> str:
 
     return "executive_review"
 
-def research_manager_node(state: HierarchicalState) -> HierarchicalState:
-    """Research manager coordinates research workers"""
-    tasks = get_manager_tasks(state["executive_plan"], "research")
-
-    for task in tasks:
-        worker = assign_worker(task)
-        output = workers[worker].invoke(task)
-        state["worker_outputs"][worker] = output
-
-    return state
-
-def executive_review_node(state: HierarchicalState) -> HierarchicalState:
-    """Executive reviews and integrates"""
-    all_outputs = state["worker_outputs"]
-
-    final = executive_llm.invoke(
-        EXECUTIVE_PROMPT +
-        f"\n\nReview and integrate:\n{all_outputs}"
-    )
-
-    return {"final_output": final}
-
 # Build graph
 workflow = StateGraph(HierarchicalState)
 
@@ -303,9 +236,6 @@ workflow.add_node("executive_review", executive_review_node)
 # Add edges
 workflow.set_entry_point("executive")
 workflow.add_conditional_edges("executive", manager_router)
-workflow.add_edge("research_manager", manager_router)
-workflow.add_edge("analysis_manager", manager_router)
-workflow.add_edge("output_manager", manager_router)
 workflow.add_edge("executive_review", END)
 
 app = workflow.compile()
@@ -315,118 +245,125 @@ app = workflow.compile()
 
 ### Top-Down Communication
 
-```python
-class Directive:
-    """Communication from higher to lower level"""
-    def __init__(
-        self,
-        sender: str,
-        receiver: str,
-        content: dict
-    ):
-        self.sender = sender
-        self.receiver = receiver
-        self.content = content
-        self.timestamp = datetime.now()
+```mermaid
+sequenceDiagram
+    participant E as Executive
+    participant M as Manager
+    participant W as Worker
 
-    def to_context(self) -> str:
-        return f"""
-## Directive from {self.sender}
-**Time**: {self.timestamp}
-**To**: {self.receiver}
-**Content**:
-{json.dumps(self.content, indent=2)}
-"""
+    E->>M: Directive
+    Note over E,M: Strategic goals<br/>Resource allocation
+    M->>W: Task Assignment
+    Note over M,W: Specific tasks<br/>Context & deadlines
 ```
 
 ### Bottom-Up Communication
 
-```python
-class Report:
-    """Communication from lower to higher level"""
-    def __init__(
-        self,
-        sender: str,
-        receiver: str,
-        report_type: str,
-        content: dict
-    ):
-        self.sender = sender
-        self.receiver = receiver
-        self.report_type = report_type  # progress|completion|escalation
-        self.content = content
-        self.timestamp = datetime.now()
+```mermaid
+sequenceDiagram
+    participant W as Worker
+    participant M as Manager
+    participant E as Executive
 
-class Escalation(Report):
-    """Escalation to higher level"""
-    def __init__(
-        self,
-        sender: str,
-        receiver: str,
-        issue: str,
-        impact: str,
-        recommendation: str
-    ):
-        super().__init__(
-            sender=sender,
-            receiver=receiver,
-            report_type="escalation",
-            content={
-                "issue": issue,
-                "impact": impact,
-                "recommendation": recommendation
-            }
-        )
+    W->>M: Progress Report
+    Note over W,M: Status updates<br/>Completion notice
+    W->>M: Escalation
+    Note over W,M: Blockers<br/>Issues
+    M->>E: Summary Report
+    Note over M,E: Aggregated status<br/>Strategic issues
 ```
 
 ## Benefits & Trade-offs
 
-### Benefits
+```mermaid
+quadrantChart
+    title Hierarchical Pattern Trade-offs
+    x-axis Low Complexity --> High Complexity
+    y-axis Low Benefit --> High Benefit
+    quadrant-1 Sweet Spot
+    quadrant-2 Overkill
+    quadrant-3 Simple Tasks
+    quadrant-4 Technical Debt
+
+    Scalability: [0.7, 0.9]
+    Specialization: [0.5, 0.85]
+    Accountability: [0.4, 0.8]
+    Coordination: [0.8, 0.6]
+    Latency: [0.6, 0.4]
+```
 
 | Benefit | Description |
 |---------|-------------|
-| Scalability | Easy to add more workers/managers |
-| Specialization | Each level focuses on appropriate scope |
-| Clear Accountability | Defined responsibilities |
-| Parallel Execution | Departments work independently |
-
-### Trade-offs
-
-| Trade-off | Mitigation |
-|-----------|------------|
-| Latency | Optimize communication protocols |
-| Coordination Overhead | Clear escalation paths |
-| Information Loss | Standardized reporting formats |
-| Complexity | Start simple, add layers as needed |
+| **Scalability** | Easy to add more workers/managers |
+| **Specialization** | Each level focuses on appropriate scope |
+| **Clear Accountability** | Defined responsibilities |
+| **Parallel Execution** | Departments work independently |
 
 ## Use Cases
 
 ### Enterprise Document Generation
 
-```
-Executive → Define document requirements
-├── Research Manager → Gather source material
-│   ├── WebSearcher → Find online sources
-│   └── DocumentAnalyzer → Process existing docs
-├── Analysis Manager → Process information
-│   ├── DataExtractor → Extract key data
-│   └── InsightGenerator → Create insights
-└── Output Manager → Create final document
-    ├── Writer → Draft content
-    └── Editor → Polish and format
+```mermaid
+flowchart TB
+    E["👔 Executive<br/>Define requirements"]
+
+    subgraph Research["📚 Research Department"]
+        RM["Research Manager"]
+        WS["Web Searcher"]
+        DA["Doc Analyzer"]
+    end
+
+    subgraph Analysis["📊 Analysis Department"]
+        AM["Analysis Manager"]
+        DE["Data Extractor"]
+        IG["Insight Generator"]
+    end
+
+    subgraph Output["📝 Output Department"]
+        OM["Output Manager"]
+        WR["Writer"]
+        ED["Editor"]
+    end
+
+    E --> RM & AM & OM
+    RM --> WS & DA
+    AM --> DE & IG
+    OM --> WR & ED
+
+    style E fill:#c0392b,stroke:#fff,color:#fff
+    style RM fill:#e74c3c,stroke:#fff,color:#fff
+    style AM fill:#e74c3c,stroke:#fff,color:#fff
+    style OM fill:#e74c3c,stroke:#fff,color:#fff
 ```
 
 ### Software Development
 
-```
-Executive (Tech Lead) → Define feature requirements
-├── Design Manager → Create technical design
-│   ├── Architect → System design
-│   └── UX Designer → User experience
-├── Development Manager → Implement features
-│   ├── Frontend Dev → UI components
-│   └── Backend Dev → API endpoints
-└── QA Manager → Ensure quality
-    ├── Tester → Write and run tests
-    └── Reviewer → Code review
+```mermaid
+flowchart TB
+    TL["👔 Tech Lead<br/>Define features"]
+
+    subgraph Design["🎨 Design Team"]
+        DM["Design Manager"]
+        AR["Architect"]
+        UX["UX Designer"]
+    end
+
+    subgraph Dev["💻 Development Team"]
+        DevM["Dev Manager"]
+        FE["Frontend Dev"]
+        BE["Backend Dev"]
+    end
+
+    subgraph QA["🧪 QA Team"]
+        QAM["QA Manager"]
+        TE["Tester"]
+        RE["Reviewer"]
+    end
+
+    TL --> DM & DevM & QAM
+    DM --> AR & UX
+    DevM --> FE & BE
+    QAM --> TE & RE
+
+    style TL fill:#c0392b,stroke:#fff,color:#fff
 ```

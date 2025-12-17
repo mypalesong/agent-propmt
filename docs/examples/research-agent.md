@@ -4,27 +4,67 @@ sidebar_position: 1
 
 # Research Agent
 
+![Research Agent Header](https://images.unsplash.com/photo-1456324463128-7ff6903988d8?w=1200&h=400&fit=crop&q=80)
+
 종합 연구 에이전트 시스템 구현 예제입니다.
 
 ## Overview
 
+```mermaid
+graph TB
+    User[User Query] --> Orchestrator[Orchestrator]
+
+    Orchestrator --> Search[Search Agent]
+    Orchestrator --> Analyst[Analyst Agent]
+    Orchestrator --> Writer[Writer Agent]
+
+    Search --> |Raw Findings| Analyst
+    Analyst --> |Analysis| Writer
+    Writer --> |Report| Final[Final Report]
+
+    Search -.-> Tools1[search_web<br/>search_academic<br/>read_webpage]
+    Analyst -.-> Tools2[analyze_data<br/>extract_insights]
+    Writer -.-> Tools3[format_report<br/>create_summary]
+
+    style User fill:#e3f2fd
+    style Orchestrator fill:#fff4e1
+    style Search fill:#f3e5f5
+    style Analyst fill:#e8f5e9
+    style Writer fill:#ffe0b2
+    style Final fill:#c8e6c9
 ```
-┌────────────────────────────────────────────────────────────┐
-│                   Research Agent System                     │
-├────────────────────────────────────────────────────────────┤
-│                                                             │
-│  User Query ──► Orchestrator                               │
-│                      │                                      │
-│        ┌─────────────┼─────────────┐                       │
-│        ▼             ▼             ▼                       │
-│   ┌─────────┐  ┌─────────┐  ┌─────────┐                   │
-│   │ Search  │  │ Analyst │  │ Writer  │                   │
-│   │ Agent   │  │ Agent   │  │ Agent   │                   │
-│   └────┬────┘  └────┬────┘  └────┬────┘                   │
-│        │            │            │                         │
-│        └─────► Final Report ◄────┘                        │
-│                                                             │
-└────────────────────────────────────────────────────────────┘
+
+## Research Workflow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant O as Orchestrator
+    participant S as Search Agent
+    participant A as Analyst Agent
+    participant W as Writer Agent
+
+    U->>O: Submit Research Query
+    O->>O: Create Research Plan
+    O->>S: Delegate: Gather Information
+    S->>S: Execute Searches
+    S->>S: Extract & Validate Sources
+    S-->>O: Return Raw Findings
+
+    O->>A: Delegate: Analyze Data
+    A->>A: Process Findings
+    A->>A: Extract Insights
+    A->>A: Identify Trends
+    A-->>O: Return Analysis
+
+    O->>W: Delegate: Create Report
+    W->>W: Structure Content
+    W->>W: Write Sections
+    W->>W: Format Document
+    W-->>O: Return Report
+
+    O->>O: Review Quality
+    O-->>U: Deliver Final Report
 ```
 
 ## Complete Implementation
@@ -221,6 +261,20 @@ Deliver complete markdown document with proper formatting.
 """
 ```
 
+## Agent State Flow
+
+```mermaid
+stateDiagram-v2
+    [*] --> Planning
+    Planning --> Searching: Research Plan Created
+    Searching --> Analyzing: Findings Gathered
+    Analyzing --> Writing: Insights Extracted
+    Writing --> Reviewing: Report Generated
+    Reviewing --> Complete: Quality Approved
+    Reviewing --> Searching: Need More Data
+    Complete --> [*]
+```
+
 ### Implementation
 
 ```python
@@ -387,6 +441,26 @@ workflow.add_edge("writer", "orchestrator")
 research_agent = workflow.compile()
 ```
 
+## Data Flow
+
+```mermaid
+flowchart LR
+    A[User Query] --> B[Research Plan]
+    B --> C[Search Queries]
+    C --> D[Raw Findings]
+    D --> E[Validated Sources]
+    E --> F[Organized Data]
+    F --> G[Analysis & Insights]
+    G --> H[Report Structure]
+    H --> I[Final Report]
+
+    style A fill:#e3f2fd
+    style B fill:#fff4e1
+    style D fill:#f3e5f5
+    style G fill:#e8f5e9
+    style I fill:#c8e6c9
+```
+
 ### Usage
 
 ```python
@@ -469,6 +543,29 @@ AI agents represent a significant opportunity for enterprise transformation...
 - [Source 1]
 - [Source 2]
 - [Source 3]
+```
+
+## Quality Assurance Process
+
+```mermaid
+flowchart TD
+    A[Report Generated] --> B{Meets Standards?}
+    B -->|Yes| C[Final Review]
+    B -->|No| D{What's Missing?}
+
+    D -->|Data Gaps| E[Additional Search]
+    D -->|Weak Analysis| F[Deeper Analysis]
+    D -->|Poor Structure| G[Rewrite Sections]
+
+    E --> H[Update Report]
+    F --> H
+    G --> H
+
+    H --> B
+    C --> I[Deliver to User]
+
+    style A fill:#e3f2fd
+    style I fill:#c8e6c9
 ```
 
 ## Customization Points

@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # AutoGen
 
+![AutoGen Framework](https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop&q=80)
+
 Microsoft AutoGen을 활용한 멀티 에이전트 프롬프트 설계입니다.
 
 ## Overview
@@ -12,6 +14,25 @@ AutoGen은 Microsoft에서 개발한 멀티 에이전트 대화 프레임워크�
 
 ```bash
 pip install autogen-agentchat autogen-ext
+```
+
+## Conversation Architecture
+
+```mermaid
+sequenceDiagram
+    participant User as User Proxy
+    participant Assistant as Assistant Agent
+    participant Code as Code Executor
+
+    User->>Assistant: Initial Request
+    Assistant->>Assistant: Generate Solution
+    Assistant->>User: Proposed Code
+    User->>Code: Execute Code
+    Code->>User: Execution Result
+    User->>Assistant: Result Feedback
+    Assistant->>User: Final Response
+
+    Note over User,Code: Iterative conversation until completion
 ```
 
 ## Agent Types
@@ -126,6 +147,32 @@ user.initiate_chat(
 
 ## Group Chat
 
+### Group Chat Flow
+
+```mermaid
+flowchart TD
+    Start([Start Task]) --> Manager[Group Chat Manager]
+    Manager --> Select{Speaker Selection}
+
+    Select -->|Auto/Round Robin| Researcher[Researcher Agent]
+    Select -->|Auto/Round Robin| Analyst[Analyst Agent]
+    Select -->|Auto/Round Robin| Writer[Writer Agent]
+
+    Researcher --> Manager
+    Analyst --> Manager
+    Writer --> Manager
+
+    Manager --> Check{Max Rounds<br/>or Complete?}
+    Check -->|No| Select
+    Check -->|Yes| End([End])
+
+    style Manager fill:#9B59B6
+    style Select fill:#F39C12
+    style Researcher fill:#3498DB
+    style Analyst fill:#27AE60
+    style Writer fill:#E74C3C
+```
+
 ### Basic Group Chat
 
 ```python
@@ -174,6 +221,21 @@ researcher.initiate_chat(
 ```
 
 ### Custom Speaker Selection
+
+```mermaid
+flowchart LR
+    Last[Last Message] --> Analyze{Analyze Content}
+
+    Analyze -->|Contains 'research'| Researcher[Researcher]
+    Analyze -->|Contains 'analyze'| Analyst[Analyst]
+    Analyze -->|Contains 'write'| Writer[Writer]
+    Analyze -->|Default| Next[Next in Rotation]
+
+    style Analyze fill:#F39C12
+    style Researcher fill:#3498DB
+    style Analyst fill:#27AE60
+    style Writer fill:#E74C3C
+```
 
 ```python
 def custom_speaker_selection(
@@ -295,6 +357,23 @@ data_scientist = AssistantAgent(
 
 ## Function Calling
 
+### Function Calling Flow
+
+```mermaid
+sequenceDiagram
+    participant Assistant as Assistant Agent
+    participant Executor as User Proxy
+    participant Function as Function/Tool
+
+    Assistant->>Assistant: Determine Need for Tool
+    Assistant->>Executor: Function Call Request
+    Executor->>Function: Execute Function
+    Function->>Executor: Return Result
+    Executor->>Assistant: Function Result
+    Assistant->>Assistant: Process Result
+    Assistant->>Executor: Final Response
+```
+
 ### Defining Functions
 
 ```python
@@ -344,6 +423,32 @@ register_function(
 ```
 
 ## Nested Chats
+
+### Nested Chat Architecture
+
+```mermaid
+graph TB
+    Coordinator[Coordinator Agent] --> Decision{Need Detailed<br/>Research?}
+
+    Decision -->|Yes| Inner[Inner Chat Session]
+    Decision -->|No| Direct[Direct Response]
+
+    Inner --> IR[Inner Researcher]
+    Inner --> IU[Inner User Proxy]
+
+    IR --> IU
+    IU --> IR
+
+    Inner --> Result[Research Result]
+    Result --> Coordinator
+    Direct --> Coordinator
+
+    Coordinator --> Final[Final Output]
+
+    style Coordinator fill:#9B59B6
+    style Inner fill:#3498DB
+    style Decision fill:#F39C12
+```
 
 ```python
 # Inner chat for detailed research

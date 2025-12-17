@@ -4,7 +4,30 @@ sidebar_position: 1
 
 # Prompt Engineering
 
+![Prompt Engineering](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=400&fit=crop&q=80)
+
 멀티 에이전트 시스템을 위한 프롬프트 엔지니어링 기법입니다.
+
+## Prompt Engineering Process
+
+```mermaid
+flowchart TD
+    A[Define Agent Role] --> B[Identify Context]
+    B --> C[Specify Task]
+    C --> D[Set Guidelines]
+    D --> E[Add Constraints]
+    E --> F[Define Output Format]
+    F --> G[Provide Examples]
+    G --> H[Test & Iterate]
+    H --> I{Quality Check}
+    I -->|Pass| J[Deploy]
+    I -->|Fail| K[Analyze Issues]
+    K --> L{Issue Type}
+    L -->|Clarity| A
+    L -->|Structure| C
+    L -->|Output| F
+    L -->|Examples| G
+```
 
 ## Core Principles
 
@@ -87,6 +110,41 @@ For each issue found, provide:
 - Description
 - Suggested fix with code example
 """
+```
+
+## Prompt Structure
+
+```mermaid
+mindmap
+  root((Prompt Structure))
+    Role
+      Who you are
+      Your expertise
+      Communication style
+    Context
+      Background info
+      Domain knowledge
+      Current situation
+    Task
+      What to do
+      Success criteria
+      Deliverables
+    Guidelines
+      How to approach
+      Best practices
+      Methodologies
+    Constraints
+      What NOT to do
+      Boundaries
+      Limitations
+    Output Format
+      Structure
+      Data format
+      Examples
+    Few-Shot Examples
+      Input/Output pairs
+      Edge cases
+      Quality benchmarks
 ```
 
 ## Prompt Patterns
@@ -179,6 +237,24 @@ Rules:
 ```
 
 ## Multi-Agent Specific Techniques
+
+```mermaid
+graph LR
+    A[User Request] --> B[Router Agent]
+    B --> C{Task Type?}
+    C -->|Research| D[Researcher]
+    C -->|Analysis| E[Analyst]
+    C -->|Writing| F[Writer]
+    D --> G[Data Collection]
+    G --> E
+    E --> H[Insights]
+    H --> F
+    F --> I[Final Output]
+
+    style D fill:#e1f5ff
+    style E fill:#fff4e1
+    style F fill:#e8f5e9
+```
 
 ### Role Differentiation
 

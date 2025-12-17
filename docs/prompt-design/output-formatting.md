@@ -4,24 +4,42 @@ sidebar_position: 5
 
 # Output Formatting
 
+![Structured Data](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=400&fit=crop&q=80)
+
 에이전트 출력 형식을 정의하고 파싱합니다.
 
 ## Output Format Types
 
-```
-┌────────────────────────────────────────────────────────────┐
-│                    Output Formats                           │
-├────────────────────────────────────────────────────────────┤
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐           │
-│  │    JSON    │  │  Markdown  │  │    XML     │           │
-│  │ Structured │  │  Readable  │  │   Verbose  │           │
-│  └────────────┘  └────────────┘  └────────────┘           │
-│                                                             │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐           │
-│  │   YAML     │  │   Plain    │  │   Custom   │           │
-│  │  Config    │  │   Text     │  │   Format   │           │
-│  └────────────┘  └────────────┘  └────────────┘           │
-└────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    A[Output Formats] --> B[JSON<br/>Structured]
+    A --> C[Markdown<br/>Readable]
+    A --> D[XML<br/>Verbose]
+    A --> E[YAML<br/>Config]
+    A --> F[Plain Text<br/>Simple]
+    A --> G[Custom<br/>Format]
+
+    B --> B1[API Responses]
+    B --> B2[Tool Integration]
+    B --> B3[Data Processing]
+
+    C --> C1[Reports]
+    C --> C2[Documentation]
+    C --> C3[Human Reading]
+
+    D --> D1[Debugging]
+    D --> D2[Legacy Systems]
+
+    E --> E1[Configuration]
+    E --> E2[Settings]
+
+    F --> F1[Simple Responses]
+    F --> F2[Direct Answers]
+
+    G --> G1[Domain Specific]
+    G --> G2[Special Requirements]
+
+    style A fill:#e1f5ff
 ```
 
 ## JSON Output
@@ -204,6 +222,26 @@ def test_function_name():
 
 ## Structured Output with Tool Calls
 
+```mermaid
+flowchart TD
+    A[Agent Receives Task] --> B{Need Tool?}
+    B -->|Yes| C[Format Tool Call]
+    B -->|No| D[Format Direct Answer]
+
+    C --> E[Execute Tool]
+    E --> F[Receive Observation]
+    F --> G{Task Complete?}
+    G -->|No| B
+    G -->|Yes| H[Format Final Answer]
+
+    D --> I[Return Response]
+    H --> I
+
+    style B fill:#ffe1e1
+    style G fill:#ffe1e1
+    style I fill:#e1ffe1
+```
+
 ### Function Calling Format
 
 ```python
@@ -268,6 +306,31 @@ Action Input: Based on my research, the top AI trends are...
 ```
 
 ## Output Parsing
+
+```mermaid
+flowchart TD
+    A[LLM Response] --> B{Direct JSON<br/>Parse Success?}
+    B -->|Yes| C[Return Parsed Data]
+    B -->|No| D[Extract JSON<br/>from Markdown]
+
+    D --> E{Found JSON<br/>Block?}
+    E -->|Yes| F[Parse Extracted JSON]
+    E -->|No| G[Regex Pattern<br/>Matching]
+
+    F --> H{Valid JSON?}
+    G --> H
+
+    H -->|Yes| C
+    H -->|No| I[LLM Retry<br/>with Schema]
+
+    I --> J[Parse Fixed Response]
+    J --> K{Valid?}
+    K -->|Yes| C
+    K -->|No| L[Return Error]
+
+    style C fill:#e1ffe1
+    style L fill:#ffe1e1
+```
 
 ### JSON Parser
 
@@ -413,6 +476,30 @@ result = validator.validate({"summary": "Test", "confidence": 0.5})
 ## Best Practices
 
 ### Format Selection Guide
+
+```mermaid
+flowchart TD
+    A{Use Case?} --> B[API Responses]
+    A --> C[Reports]
+    A --> D[Configuration]
+    A --> E[Tool Integration]
+    A --> F[Debugging]
+    A --> G[Simple Answer]
+
+    B --> B1[Use JSON]
+    C --> C1[Use Markdown]
+    D --> D1[Use YAML]
+    E --> E1[Use JSON<br/>with Schema]
+    F --> F1[Use XML or<br/>Verbose JSON]
+    G --> G1[Use Plain Text]
+
+    style B1 fill:#e1ffe1
+    style C1 fill:#e1ffe1
+    style D1 fill:#e1ffe1
+    style E1 fill:#e1ffe1
+    style F1 fill:#e1ffe1
+    style G1 fill:#e1ffe1
+```
 
 | Use Case | Recommended Format |
 |----------|-------------------|

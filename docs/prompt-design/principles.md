@@ -4,11 +4,38 @@ sidebar_position: 1
 
 # Prompt Design Principles
 
+![Prompt Design](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=400&fit=crop&q=80)
+
 효과적인 에이전트 프롬프트 설계의 핵심 원칙입니다.
 
 ## The CRISP Framework
 
 멀티 에이전트 프롬프트 설계를 위한 CRISP 프레임워크:
+
+```mermaid
+mindmap
+  root((CRISP Framework))
+    Clear Role
+      명확한 역할 정의
+      전문성 수준 명시
+      경험 배경 제공
+    Relevant Context
+      관련 컨텍스트 제공
+      프로젝트 정보
+      이전 결과 참조
+    Instructive Guidelines
+      구체적인 가이드라인
+      단계별 지침
+      의사결정 프레임워크
+    Structured Output
+      구조화된 출력 형식
+      JSON/Markdown
+      파싱 가능한 형식
+    Purposeful Constraints
+      목적 있는 제약 조건
+      행동 규칙
+      범위 제한
+```
 
 | Principle | Description |
 |-----------|-------------|
@@ -146,6 +173,23 @@ Are there potential risks?
 """
 ```
 
+```mermaid
+flowchart TD
+    A[Receive Request] --> B{Is request clear?}
+    B -->|Yes| C{Is task within scope?}
+    B -->|No| D[Ask clarifying questions]
+    D --> A
+    C -->|Yes| E{Are there potential risks?}
+    C -->|No| F[Explain limitations and suggest alternatives]
+    E -->|Yes| G[Document risks and mitigations]
+    E -->|No| H[Proceed with standard approach]
+    G --> I[Execute task with caution]
+    H --> J[Execute task]
+    I --> K[Complete]
+    J --> K
+    F --> K
+```
+
 ## Principle 4: Structured Output
 
 ### JSON Output Format
@@ -270,6 +314,18 @@ and suggest the appropriate agent or resource.
 ```
 
 ## Combining Principles
+
+```mermaid
+flowchart LR
+    A[Role Definition] --> G[Complete Prompt]
+    B[Context] --> G
+    C[Instructions] --> G
+    D[Guidelines] --> G
+    E[Constraints] --> G
+    F[Output Format] --> G
+    G --> H[Agent Execution]
+    H --> I[Structured Output]
+```
 
 Complete prompt template:
 

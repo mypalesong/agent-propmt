@@ -6,48 +6,53 @@ sidebar_position: 3
 
 멀티 에이전트 시스템의 아키텍처를 설계합니다.
 
+![System Architecture](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=400&fit=crop&q=80)
+
 ## Architecture Overview
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│                     Multi-Agent System                          │
-├────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                    Interface Layer                        │  │
-│  │  (API Gateway, WebSocket, CLI)                           │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                              │                                   │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                  Orchestration Layer                      │  │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │  │
-│  │  │   Router    │  │  Scheduler  │  │   Monitor   │      │  │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘      │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                              │                                   │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                     Agent Layer                           │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │  │
-│  │  │ Agent 1  │ │ Agent 2  │ │ Agent 3  │ │ Agent N  │    │  │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                              │                                   │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                   Tool Layer                              │  │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        │  │
-│  │  │  Search │ │   DB    │ │   API   │ │  File   │        │  │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                              │                                   │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                   Memory Layer                            │  │
-│  │  ┌───────────────┐  ┌───────────────┐                    │  │
-│  │  │  Short-term   │  │   Long-term   │                    │  │
-│  │  │   (Context)   │  │   (Vector DB) │                    │  │
-│  │  └───────────────┘  └───────────────┘                    │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                  │
-└────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Interface["🌐 Interface Layer"]
+        API["API Gateway"]
+        WS["WebSocket"]
+        CLI["CLI"]
+    end
+
+    subgraph Orchestration["🎯 Orchestration Layer"]
+        Router["Router"]
+        Scheduler["Scheduler"]
+        Monitor["Monitor"]
+    end
+
+    subgraph Agents["🤖 Agent Layer"]
+        A1["Agent 1"]
+        A2["Agent 2"]
+        A3["Agent 3"]
+        AN["Agent N"]
+    end
+
+    subgraph Tools["🔧 Tool Layer"]
+        Search["Search"]
+        DB["Database"]
+        ExtAPI["External API"]
+        File["File System"]
+    end
+
+    subgraph Memory["💾 Memory Layer"]
+        STM["Short-term<br/>(Context)"]
+        LTM["Long-term<br/>(Vector DB)"]
+    end
+
+    Interface --> Orchestration
+    Orchestration --> Agents
+    Agents --> Tools
+    Agents --> Memory
+
+    style Interface fill:#3498db,stroke:#fff,color:#fff
+    style Orchestration fill:#e74c3c,stroke:#fff,color:#fff
+    style Agents fill:#2ecc71,stroke:#fff,color:#fff
+    style Tools fill:#9b59b6,stroke:#fff,color:#fff
+    style Memory fill:#f39c12,stroke:#fff,color:#fff
 ```
 
 ## Layer Details
@@ -55,6 +60,30 @@ sidebar_position: 3
 ### 1. Interface Layer
 
 사용자 및 외부 시스템과의 인터페이스:
+
+```mermaid
+flowchart LR
+    subgraph Clients["Clients"]
+        Web["🌐 Web App"]
+        Mobile["📱 Mobile"]
+        API_Client["🔌 API Client"]
+    end
+
+    subgraph Interface["Interface Layer"]
+        REST["REST API"]
+        WebSocket["WebSocket"]
+        GraphQL["GraphQL"]
+    end
+
+    subgraph Backend["Backend"]
+        Orch["Orchestrator"]
+    end
+
+    Web --> REST & WebSocket
+    Mobile --> REST & WebSocket
+    API_Client --> REST & GraphQL
+    REST & WebSocket & GraphQL --> Orch
+```
 
 ```python
 from fastapi import FastAPI, WebSocket
@@ -78,6 +107,26 @@ async def stream_agent(websocket: WebSocket):
 ### 2. Orchestration Layer
 
 에이전트 조율 및 작업 관리:
+
+```mermaid
+flowchart TB
+    subgraph Orchestration["🎯 Orchestration Layer"]
+        direction TB
+        Router["🔀 Router<br/>작업 라우팅"]
+        Scheduler["📅 Scheduler<br/>스케줄링"]
+        Monitor["📊 Monitor<br/>모니터링"]
+    end
+
+    Request["📥 Request"] --> Router
+    Router --> Scheduler
+    Scheduler --> Execute["⚡ Execute"]
+    Execute --> Monitor
+    Monitor --> Response["📤 Response"]
+
+    style Router fill:#e74c3c,stroke:#fff,color:#fff
+    style Scheduler fill:#e74c3c,stroke:#fff,color:#fff
+    style Monitor fill:#e74c3c,stroke:#fff,color:#fff
+```
 
 ```python
 class Orchestrator:
@@ -103,6 +152,38 @@ class Orchestrator:
 ### 3. Agent Layer
 
 개별 에이전트 구현:
+
+```mermaid
+classDiagram
+    class BaseAgent {
+        +String role
+        +String goal
+        +String prompt
+        +List tools
+        +LLM llm
+        +run(task) String
+        -build_prompt() String
+    }
+
+    class ResearchAgent {
+        +search_web()
+        +analyze_docs()
+    }
+
+    class AnalysisAgent {
+        +process_data()
+        +find_patterns()
+    }
+
+    class WriterAgent {
+        +create_content()
+        +format_output()
+    }
+
+    BaseAgent <|-- ResearchAgent
+    BaseAgent <|-- AnalysisAgent
+    BaseAgent <|-- WriterAgent
+```
 
 ```python
 class BaseAgent:
@@ -137,6 +218,29 @@ class BaseAgent:
 
 외부 도구 및 API 통합:
 
+```mermaid
+flowchart LR
+    subgraph Tools["🔧 Tool Layer"]
+        direction TB
+        Search["🔍 Search Tool"]
+        DB["🗄️ Database Tool"]
+        API["🌐 API Tool"]
+        File["📁 File Tool"]
+    end
+
+    subgraph External["External Services"]
+        Google["Google"]
+        Postgres["PostgreSQL"]
+        Slack["Slack"]
+        S3["AWS S3"]
+    end
+
+    Search --> Google
+    DB --> Postgres
+    API --> Slack
+    File --> S3
+```
+
 ```python
 from pydantic import BaseModel
 from typing import Any
@@ -165,6 +269,29 @@ class SearchTool(Tool):
 
 상태 및 컨텍스트 관리:
 
+```mermaid
+flowchart TB
+    subgraph Memory["💾 Memory Layer"]
+        direction LR
+        subgraph STM["Short-term Memory"]
+            Context["Context Window"]
+            Session["Session State"]
+        end
+        subgraph LTM["Long-term Memory"]
+            Vector["Vector Store"]
+            KV["Key-Value Store"]
+        end
+    end
+
+    Agent["🤖 Agent"] --> STM
+    Agent --> LTM
+    STM --> |Temporary| Redis["Redis"]
+    LTM --> |Persistent| Pinecone["Pinecone/Qdrant"]
+
+    style STM fill:#f39c12,stroke:#fff,color:#fff
+    style LTM fill:#27ae60,stroke:#fff,color:#fff
+```
+
 ```python
 class MemoryManager:
     def __init__(self):
@@ -189,6 +316,21 @@ class MemoryManager:
 ## Design Patterns
 
 ### Microservices Architecture
+
+```mermaid
+flowchart TB
+    subgraph K8s["☸️ Kubernetes Cluster"]
+        Orch["Orchestrator<br/>Service"]
+        Research["Research<br/>Agent"]
+        Writer["Writer<br/>Agent"]
+        Redis["Redis"]
+        Qdrant["Qdrant"]
+    end
+
+    LB["Load Balancer"] --> Orch
+    Orch --> Research & Writer
+    Research & Writer --> Redis & Qdrant
+```
 
 각 에이전트를 독립 서비스로 배포:
 
@@ -219,6 +361,26 @@ services:
 
 ### Event-Driven Architecture
 
+```mermaid
+flowchart LR
+    subgraph Producers["Producers"]
+        P1["Agent 1"]
+        P2["Agent 2"]
+    end
+
+    subgraph MQ["Message Queue"]
+        Queue["RabbitMQ/Kafka"]
+    end
+
+    subgraph Consumers["Consumers"]
+        C1["Handler 1"]
+        C2["Handler 2"]
+    end
+
+    P1 & P2 --> Queue
+    Queue --> C1 & C2
+```
+
 이벤트 기반 통신:
 
 ```python
@@ -239,6 +401,21 @@ class EventBus:
 ## Scaling Strategies
 
 ### Horizontal Scaling
+
+```mermaid
+flowchart TB
+    LB["⚖️ Load Balancer"]
+
+    subgraph Pool["Agent Pool"]
+        A1["Agent 1"]
+        A2["Agent 2"]
+        A3["Agent 3"]
+    end
+
+    LB --> A1 & A2 & A3
+
+    style LB fill:#e74c3c,stroke:#fff,color:#fff
+```
 
 ```python
 # Load balancer configuration
@@ -268,6 +445,28 @@ class AgentPool:
 ```
 
 ## Security Considerations
+
+```mermaid
+flowchart TB
+    subgraph Security["🔒 Security Layers"]
+        Auth["Authentication"]
+        Valid["Input Validation"]
+        Rate["Rate Limiting"]
+        Audit["Audit Logging"]
+    end
+
+    Request["Request"] --> Auth
+    Auth --> Valid
+    Valid --> Rate
+    Rate --> Agent["Agent"]
+    Agent --> Audit
+    Audit --> Response["Response"]
+
+    style Auth fill:#c0392b,stroke:#fff,color:#fff
+    style Valid fill:#c0392b,stroke:#fff,color:#fff
+    style Rate fill:#c0392b,stroke:#fff,color:#fff
+    style Audit fill:#c0392b,stroke:#fff,color:#fff
+```
 
 ### Input Validation
 
@@ -300,6 +499,18 @@ async def run_agent(request: Request):
 ```
 
 ## Monitoring & Observability
+
+```mermaid
+flowchart LR
+    subgraph Observability["📊 Observability Stack"]
+        Metrics["Prometheus<br/>Metrics"]
+        Traces["Jaeger<br/>Tracing"]
+        Logs["ELK<br/>Logging"]
+    end
+
+    Agents["Agents"] --> Metrics & Traces & Logs
+    Metrics & Traces & Logs --> Dashboard["Grafana<br/>Dashboard"]
+```
 
 ### Metrics Collection
 
