@@ -1,0 +1,27 @@
+{
+  "id": "prompt-design/context-management",
+  "title": "Context Management",
+  "description": "멀티 에이전트 시스템에서 컨텍스트를 효과적으로 관리합니다.",
+  "source": "@site/docs/prompt-design/context-management.md",
+  "sourceDirName": "prompt-design",
+  "slug": "/prompt-design/context-management",
+  "permalink": "/agent-propmt/en/docs/prompt-design/context-management",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/prompt-design/context-management.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Role Definition",
+    "permalink": "/agent-propmt/en/docs/prompt-design/role-definition"
+  },
+  "next": {
+    "title": "Output Formatting",
+    "permalink": "/agent-propmt/en/docs/prompt-design/output-formatting"
+  }
+}

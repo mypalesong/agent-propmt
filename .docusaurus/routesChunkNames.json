@@ -1,0 +1,145 @@
+{
+  "/agent-propmt/en/markdown-page-0a1": {
+    "__comp": "1f391b9e",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "content": "393be207"
+  },
+  "/agent-propmt/en/docs-f9a": {
+    "__comp": "5e95c892",
+    "__context": {
+      "plugin": "aba21aa0"
+    }
+  },
+  "/agent-propmt/en/docs-d22": {
+    "__comp": "a7bd4aaa",
+    "__props": "92365423"
+  },
+  "/agent-propmt/en/docs-26d": {
+    "__comp": "a94703ab"
+  },
+  "/agent-propmt/en/docs/best-practices/debugging-d19": {
+    "__comp": "17896441",
+    "content": "70e2f7e3"
+  },
+  "/agent-propmt/en/docs/best-practices/evaluation-e09": {
+    "__comp": "17896441",
+    "content": "22602076"
+  },
+  "/agent-propmt/en/docs/best-practices/prompt-engineering-6dc": {
+    "__comp": "17896441",
+    "content": "e9efaae1"
+  },
+  "/agent-propmt/en/docs/best-practices/security-55d": {
+    "__comp": "17896441",
+    "content": "9f7d59bc"
+  },
+  "/agent-propmt/en/docs/examples/code-review-agent-1fd": {
+    "__comp": "17896441",
+    "content": "2336e5d3"
+  },
+  "/agent-propmt/en/docs/examples/customer-support-eba": {
+    "__comp": "17896441",
+    "content": "c11d7c84"
+  },
+  "/agent-propmt/en/docs/examples/research-agent-389": {
+    "__comp": "17896441",
+    "content": "02713a1a"
+  },
+  "/agent-propmt/en/docs/frameworks/autogen-294": {
+    "__comp": "17896441",
+    "content": "6f3a5f12"
+  },
+  "/agent-propmt/en/docs/frameworks/crewai-82e": {
+    "__comp": "17896441",
+    "content": "05120b7e"
+  },
+  "/agent-propmt/en/docs/frameworks/langchain-9fa": {
+    "__comp": "17896441",
+    "content": "bd286093"
+  },
+  "/agent-propmt/en/docs/frameworks/langgraph-58f": {
+    "__comp": "17896441",
+    "content": "5718fdfd"
+  },
+  "/agent-propmt/en/docs/frameworks/openai-swarm-45a": {
+    "__comp": "17896441",
+    "content": "fc59df7d"
+  },
+  "/agent-propmt/en/docs/getting-started/architecture-d1c": {
+    "__comp": "17896441",
+    "content": "24b82002"
+  },
+  "/agent-propmt/en/docs/getting-started/concepts-39e": {
+    "__comp": "17896441",
+    "content": "7b3ed863"
+  },
+  "/agent-propmt/en/docs/getting-started/quick-start-a7c": {
+    "__comp": "17896441",
+    "content": "588bd741"
+  },
+  "/agent-propmt/en/docs/intro-6b5": {
+    "__comp": "17896441",
+    "content": "0e384e19"
+  },
+  "/agent-propmt/en/docs/patterns/hierarchical-12f": {
+    "__comp": "17896441",
+    "content": "749eb374"
+  },
+  "/agent-propmt/en/docs/patterns/orchestrator-ac1": {
+    "__comp": "17896441",
+    "content": "a7b8240f"
+  },
+  "/agent-propmt/en/docs/patterns/peer-to-peer-1f2": {
+    "__comp": "17896441",
+    "content": "398639d2"
+  },
+  "/agent-propmt/en/docs/patterns/supervisor-21a": {
+    "__comp": "17896441",
+    "content": "b59f6a85"
+  },
+  "/agent-propmt/en/docs/patterns/swarm-ec5": {
+    "__comp": "17896441",
+    "content": "366b3260"
+  },
+  "/agent-propmt/en/docs/prompt-design/context-management-367": {
+    "__comp": "17896441",
+    "content": "f00a9e95"
+  },
+  "/agent-propmt/en/docs/prompt-design/output-formatting-13c": {
+    "__comp": "17896441",
+    "content": "04d5d18c"
+  },
+  "/agent-propmt/en/docs/prompt-design/principles-a8b": {
+    "__comp": "17896441",
+    "content": "03deca63"
+  },
+  "/agent-propmt/en/docs/prompt-design/role-definition-9a8": {
+    "__comp": "17896441",
+    "content": "d5854218"
+  },
+  "/agent-propmt/en/docs/prompt-design/system-prompts-12d": {
+    "__comp": "17896441",
+    "content": "37ae1009"
+  },
+  "/agent-propmt/en/docs/tools/mcp-3f3": {
+    "__comp": "17896441",
+    "content": "fbff0b2a"
+  },
+  "/agent-propmt/en/docs/tools/tool-calling-343": {
+    "__comp": "17896441",
+    "content": "ee1f525d"
+  },
+  "/agent-propmt/en/docs/tools/tool-definition-eb6": {
+    "__comp": "17896441",
+    "content": "efd698e5"
+  },
+  "/agent-propmt/en/-af7": {
+    "__comp": "1df93b7f",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "config": "5e9f5e1a"
+  }
+}

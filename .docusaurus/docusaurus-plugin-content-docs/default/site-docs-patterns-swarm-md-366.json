@@ -1,0 +1,27 @@
+{
+  "id": "patterns/swarm",
+  "title": "Swarm Pattern",
+  "description": "다수의 경량 에이전트가 협력하는 창발적 패턴입니다.",
+  "source": "@site/docs/patterns/swarm.md",
+  "sourceDirName": "patterns",
+  "slug": "/patterns/swarm",
+  "permalink": "/agent-propmt/en/docs/patterns/swarm",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/patterns/swarm.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Peer-to-Peer Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/peer-to-peer"
+  },
+  "next": {
+    "title": "LangChain",
+    "permalink": "/agent-propmt/en/docs/frameworks/langchain"
+  }
+}

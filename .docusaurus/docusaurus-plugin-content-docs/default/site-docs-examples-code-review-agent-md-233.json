@@ -1,0 +1,27 @@
+{
+  "id": "examples/code-review-agent",
+  "title": "Code Review Agent",
+  "description": "자동화된 코드 리뷰 멀티 에이전트 시스템입니다.",
+  "source": "@site/docs/examples/code-review-agent.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/code-review-agent",
+  "permalink": "/agent-propmt/en/docs/examples/code-review-agent",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/examples/code-review-agent.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Research Agent",
+    "permalink": "/agent-propmt/en/docs/examples/research-agent"
+  },
+  "next": {
+    "title": "Customer Support Agent",
+    "permalink": "/agent-propmt/en/docs/examples/customer-support"
+  }
+}

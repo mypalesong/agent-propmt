@@ -1,0 +1,27 @@
+{
+  "id": "best-practices/evaluation",
+  "title": "Evaluation",
+  "description": "멀티 에이전트 시스템의 성능을 평가하는 방법입니다.",
+  "source": "@site/docs/best-practices/evaluation.md",
+  "sourceDirName": "best-practices",
+  "slug": "/best-practices/evaluation",
+  "permalink": "/agent-propmt/en/docs/best-practices/evaluation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/best-practices/evaluation.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Debugging",
+    "permalink": "/agent-propmt/en/docs/best-practices/debugging"
+  },
+  "next": {
+    "title": "Security",
+    "permalink": "/agent-propmt/en/docs/best-practices/security"
+  }
+}

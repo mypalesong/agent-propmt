@@ -1,0 +1,27 @@
+{
+  "id": "getting-started/quick-start",
+  "title": "Quick Start",
+  "description": "멀티 에이전트 프롬프트 설계를 빠르게 시작하는 가이드입니다.",
+  "source": "@site/docs/getting-started/quick-start.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/quick-start",
+  "permalink": "/agent-propmt/en/docs/getting-started/quick-start",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/getting-started/quick-start.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Multi-Agent Prompt Guide",
+    "permalink": "/agent-propmt/en/docs/intro"
+  },
+  "next": {
+    "title": "Core Concepts",
+    "permalink": "/agent-propmt/en/docs/getting-started/concepts"
+  }
+}

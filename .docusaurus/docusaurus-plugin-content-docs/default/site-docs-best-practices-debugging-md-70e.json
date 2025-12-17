@@ -1,0 +1,27 @@
+{
+  "id": "best-practices/debugging",
+  "title": "Debugging",
+  "description": "멀티 에이전트 시스템 디버깅 전략과 기법입니다.",
+  "source": "@site/docs/best-practices/debugging.md",
+  "sourceDirName": "best-practices",
+  "slug": "/best-practices/debugging",
+  "permalink": "/agent-propmt/en/docs/best-practices/debugging",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/best-practices/debugging.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Prompt Engineering",
+    "permalink": "/agent-propmt/en/docs/best-practices/prompt-engineering"
+  },
+  "next": {
+    "title": "Evaluation",
+    "permalink": "/agent-propmt/en/docs/best-practices/evaluation"
+  }
+}

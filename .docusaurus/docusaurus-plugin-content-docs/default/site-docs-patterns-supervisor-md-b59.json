@@ -1,0 +1,27 @@
+{
+  "id": "patterns/supervisor",
+  "title": "Supervisor Pattern",
+  "description": "감독자가 작업자 에이전트들을 관리하고 품질을 보장하는 패턴입니다.",
+  "source": "@site/docs/patterns/supervisor.md",
+  "sourceDirName": "patterns",
+  "slug": "/patterns/supervisor",
+  "permalink": "/agent-propmt/en/docs/patterns/supervisor",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/patterns/supervisor.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Orchestrator Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/orchestrator"
+  },
+  "next": {
+    "title": "Hierarchical Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/hierarchical"
+  }
+}

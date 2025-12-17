@@ -1,0 +1,27 @@
+{
+  "id": "tools/mcp",
+  "title": "Model Context Protocol (MCP)",
+  "description": "MCP를 활용한 표준화된 도구 통합입니다.",
+  "source": "@site/docs/tools/mcp.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/mcp",
+  "permalink": "/agent-propmt/en/docs/tools/mcp",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/tools/mcp.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Tool Calling",
+    "permalink": "/agent-propmt/en/docs/tools/tool-calling"
+  },
+  "next": {
+    "title": "Prompt Engineering",
+    "permalink": "/agent-propmt/en/docs/best-practices/prompt-engineering"
+  }
+}

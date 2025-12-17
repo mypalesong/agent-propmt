@@ -1,0 +1,27 @@
+{
+  "id": "frameworks/autogen",
+  "title": "AutoGen",
+  "description": "Microsoft AutoGen을 활용한 멀티 에이전트 프롬프트 설계입니다.",
+  "source": "@site/docs/frameworks/autogen.md",
+  "sourceDirName": "frameworks",
+  "slug": "/frameworks/autogen",
+  "permalink": "/agent-propmt/en/docs/frameworks/autogen",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/frameworks/autogen.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "LangChain",
+    "permalink": "/agent-propmt/en/docs/frameworks/langchain"
+  },
+  "next": {
+    "title": "CrewAI",
+    "permalink": "/agent-propmt/en/docs/frameworks/crewai"
+  }
+}

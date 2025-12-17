@@ -1,0 +1,27 @@
+{
+  "id": "examples/research-agent",
+  "title": "Research Agent",
+  "description": "종합 연구 에이전트 시스템 구현 예제입니다.",
+  "source": "@site/docs/examples/research-agent.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/research-agent",
+  "permalink": "/agent-propmt/en/docs/examples/research-agent",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/examples/research-agent.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Security",
+    "permalink": "/agent-propmt/en/docs/best-practices/security"
+  },
+  "next": {
+    "title": "Code Review Agent",
+    "permalink": "/agent-propmt/en/docs/examples/code-review-agent"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "getting-started/architecture",
+  "title": "System Architecture",
+  "description": "멀티 에이전트 시스템의 아키텍처를 설계합니다.",
+  "source": "@site/docs/getting-started/architecture.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/architecture",
+  "permalink": "/agent-propmt/en/docs/getting-started/architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/getting-started/architecture.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Core Concepts",
+    "permalink": "/agent-propmt/en/docs/getting-started/concepts"
+  },
+  "next": {
+    "title": "Prompt Design Principles",
+    "permalink": "/agent-propmt/en/docs/prompt-design/principles"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "prompt-design/system-prompts",
+  "title": "System Prompts",
+  "description": "멀티 에이전트 시스템에서 시스템 프롬프트를 효과적으로 설계합니다.",
+  "source": "@site/docs/prompt-design/system-prompts.md",
+  "sourceDirName": "prompt-design",
+  "slug": "/prompt-design/system-prompts",
+  "permalink": "/agent-propmt/en/docs/prompt-design/system-prompts",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/prompt-design/system-prompts.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Prompt Design Principles",
+    "permalink": "/agent-propmt/en/docs/prompt-design/principles"
+  },
+  "next": {
+    "title": "Role Definition",
+    "permalink": "/agent-propmt/en/docs/prompt-design/role-definition"
+  }
+}

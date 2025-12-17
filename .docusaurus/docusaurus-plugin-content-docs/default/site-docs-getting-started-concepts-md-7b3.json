@@ -1,0 +1,27 @@
+{
+  "id": "getting-started/concepts",
+  "title": "Core Concepts",
+  "description": "멀티 에이전트 시스템의 핵심 개념을 이해합니다.",
+  "source": "@site/docs/getting-started/concepts.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/concepts",
+  "permalink": "/agent-propmt/en/docs/getting-started/concepts",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/getting-started/concepts.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Quick Start",
+    "permalink": "/agent-propmt/en/docs/getting-started/quick-start"
+  },
+  "next": {
+    "title": "System Architecture",
+    "permalink": "/agent-propmt/en/docs/getting-started/architecture"
+  }
+}

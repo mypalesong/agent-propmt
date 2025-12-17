@@ -1,0 +1,27 @@
+{
+  "id": "frameworks/openai-swarm",
+  "title": "OpenAI Swarm",
+  "description": "OpenAI Swarm을 활용한 경량 멀티 에이전트 오케스트레이션입니다.",
+  "source": "@site/docs/frameworks/openai-swarm.md",
+  "sourceDirName": "frameworks",
+  "slug": "/frameworks/openai-swarm",
+  "permalink": "/agent-propmt/en/docs/frameworks/openai-swarm",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/frameworks/openai-swarm.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "CrewAI",
+    "permalink": "/agent-propmt/en/docs/frameworks/crewai"
+  },
+  "next": {
+    "title": "LangGraph",
+    "permalink": "/agent-propmt/en/docs/frameworks/langgraph"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "best-practices/prompt-engineering",
+  "title": "Prompt Engineering",
+  "description": "멀티 에이전트 시스템을 위한 프롬프트 엔지니어링 기법입니다.",
+  "source": "@site/docs/best-practices/prompt-engineering.md",
+  "sourceDirName": "best-practices",
+  "slug": "/best-practices/prompt-engineering",
+  "permalink": "/agent-propmt/en/docs/best-practices/prompt-engineering",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/best-practices/prompt-engineering.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Model Context Protocol (MCP)",
+    "permalink": "/agent-propmt/en/docs/tools/mcp"
+  },
+  "next": {
+    "title": "Debugging",
+    "permalink": "/agent-propmt/en/docs/best-practices/debugging"
+  }
+}

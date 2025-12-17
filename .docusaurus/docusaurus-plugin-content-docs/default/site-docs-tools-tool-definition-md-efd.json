@@ -1,0 +1,27 @@
+{
+  "id": "tools/tool-definition",
+  "title": "Tool Definition",
+  "description": "에이전트가 사용할 도구를 정의하는 방법입니다.",
+  "source": "@site/docs/tools/tool-definition.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/tool-definition",
+  "permalink": "/agent-propmt/en/docs/tools/tool-definition",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/tools/tool-definition.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "LangGraph",
+    "permalink": "/agent-propmt/en/docs/frameworks/langgraph"
+  },
+  "next": {
+    "title": "Tool Calling",
+    "permalink": "/agent-propmt/en/docs/tools/tool-calling"
+  }
+}

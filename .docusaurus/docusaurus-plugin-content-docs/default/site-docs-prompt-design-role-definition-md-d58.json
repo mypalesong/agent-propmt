@@ -1,0 +1,27 @@
+{
+  "id": "prompt-design/role-definition",
+  "title": "Role Definition",
+  "description": "에이전트 역할 정의의 핵심 요소와 패턴입니다.",
+  "source": "@site/docs/prompt-design/role-definition.md",
+  "sourceDirName": "prompt-design",
+  "slug": "/prompt-design/role-definition",
+  "permalink": "/agent-propmt/en/docs/prompt-design/role-definition",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/prompt-design/role-definition.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "System Prompts",
+    "permalink": "/agent-propmt/en/docs/prompt-design/system-prompts"
+  },
+  "next": {
+    "title": "Context Management",
+    "permalink": "/agent-propmt/en/docs/prompt-design/context-management"
+  }
+}

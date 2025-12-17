@@ -1,0 +1,27 @@
+{
+  "id": "patterns/peer-to-peer",
+  "title": "Peer-to-Peer Pattern",
+  "description": "동등한 에이전트들이 직접 협력하는 패턴입니다.",
+  "source": "@site/docs/patterns/peer-to-peer.md",
+  "sourceDirName": "patterns",
+  "slug": "/patterns/peer-to-peer",
+  "permalink": "/agent-propmt/en/docs/patterns/peer-to-peer",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/patterns/peer-to-peer.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Hierarchical Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/hierarchical"
+  },
+  "next": {
+    "title": "Swarm Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/swarm"
+  }
+}

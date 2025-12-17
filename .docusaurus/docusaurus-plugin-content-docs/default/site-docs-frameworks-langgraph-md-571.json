@@ -1,0 +1,27 @@
+{
+  "id": "frameworks/langgraph",
+  "title": "LangGraph",
+  "description": "LangGraph를 활용한 상태 기반 멀티 에이전트 워크플로우입니다.",
+  "source": "@site/docs/frameworks/langgraph.md",
+  "sourceDirName": "frameworks",
+  "slug": "/frameworks/langgraph",
+  "permalink": "/agent-propmt/en/docs/frameworks/langgraph",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/frameworks/langgraph.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "OpenAI Swarm",
+    "permalink": "/agent-propmt/en/docs/frameworks/openai-swarm"
+  },
+  "next": {
+    "title": "Tool Definition",
+    "permalink": "/agent-propmt/en/docs/tools/tool-definition"
+  }
+}

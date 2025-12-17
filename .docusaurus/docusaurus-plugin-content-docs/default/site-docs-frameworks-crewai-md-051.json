@@ -1,0 +1,27 @@
+{
+  "id": "frameworks/crewai",
+  "title": "CrewAI",
+  "description": "CrewAI를 활용한 멀티 에이전트 프롬프트 설계입니다.",
+  "source": "@site/docs/frameworks/crewai.md",
+  "sourceDirName": "frameworks",
+  "slug": "/frameworks/crewai",
+  "permalink": "/agent-propmt/en/docs/frameworks/crewai",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/frameworks/crewai.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "AutoGen",
+    "permalink": "/agent-propmt/en/docs/frameworks/autogen"
+  },
+  "next": {
+    "title": "OpenAI Swarm",
+    "permalink": "/agent-propmt/en/docs/frameworks/openai-swarm"
+  }
+}

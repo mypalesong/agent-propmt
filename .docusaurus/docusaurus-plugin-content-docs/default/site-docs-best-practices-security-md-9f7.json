@@ -1,0 +1,27 @@
+{
+  "id": "best-practices/security",
+  "title": "Security",
+  "description": "멀티 에이전트 시스템의 보안 고려사항입니다.",
+  "source": "@site/docs/best-practices/security.md",
+  "sourceDirName": "best-practices",
+  "slug": "/best-practices/security",
+  "permalink": "/agent-propmt/en/docs/best-practices/security",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/best-practices/security.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Evaluation",
+    "permalink": "/agent-propmt/en/docs/best-practices/evaluation"
+  },
+  "next": {
+    "title": "Research Agent",
+    "permalink": "/agent-propmt/en/docs/examples/research-agent"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "prompt-design/principles",
+  "title": "Prompt Design Principles",
+  "description": "효과적인 에이전트 프롬프트 설계의 핵심 원칙입니다.",
+  "source": "@site/docs/prompt-design/principles.md",
+  "sourceDirName": "prompt-design",
+  "slug": "/prompt-design/principles",
+  "permalink": "/agent-propmt/en/docs/prompt-design/principles",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/prompt-design/principles.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "System Architecture",
+    "permalink": "/agent-propmt/en/docs/getting-started/architecture"
+  },
+  "next": {
+    "title": "System Prompts",
+    "permalink": "/agent-propmt/en/docs/prompt-design/system-prompts"
+  }
+}

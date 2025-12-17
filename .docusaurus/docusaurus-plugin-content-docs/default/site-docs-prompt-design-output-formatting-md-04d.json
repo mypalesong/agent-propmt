@@ -1,0 +1,27 @@
+{
+  "id": "prompt-design/output-formatting",
+  "title": "Output Formatting",
+  "description": "에이전트 출력 형식을 정의하고 파싱합니다.",
+  "source": "@site/docs/prompt-design/output-formatting.md",
+  "sourceDirName": "prompt-design",
+  "slug": "/prompt-design/output-formatting",
+  "permalink": "/agent-propmt/en/docs/prompt-design/output-formatting",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/prompt-design/output-formatting.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Context Management",
+    "permalink": "/agent-propmt/en/docs/prompt-design/context-management"
+  },
+  "next": {
+    "title": "Orchestrator Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/orchestrator"
+  }
+}

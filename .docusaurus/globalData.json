@@ -1,0 +1,173 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/agent-propmt/en/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/agent-propmt/en/docs",
+          "mainDocId": "intro",
+          "docs": [
+            {
+              "id": "best-practices/debugging",
+              "path": "/agent-propmt/en/docs/best-practices/debugging",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "best-practices/evaluation",
+              "path": "/agent-propmt/en/docs/best-practices/evaluation",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "best-practices/prompt-engineering",
+              "path": "/agent-propmt/en/docs/best-practices/prompt-engineering",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "best-practices/security",
+              "path": "/agent-propmt/en/docs/best-practices/security",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "examples/code-review-agent",
+              "path": "/agent-propmt/en/docs/examples/code-review-agent",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "examples/customer-support",
+              "path": "/agent-propmt/en/docs/examples/customer-support",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "examples/research-agent",
+              "path": "/agent-propmt/en/docs/examples/research-agent",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "frameworks/autogen",
+              "path": "/agent-propmt/en/docs/frameworks/autogen",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "frameworks/crewai",
+              "path": "/agent-propmt/en/docs/frameworks/crewai",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "frameworks/langchain",
+              "path": "/agent-propmt/en/docs/frameworks/langchain",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "frameworks/langgraph",
+              "path": "/agent-propmt/en/docs/frameworks/langgraph",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "frameworks/openai-swarm",
+              "path": "/agent-propmt/en/docs/frameworks/openai-swarm",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "getting-started/architecture",
+              "path": "/agent-propmt/en/docs/getting-started/architecture",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "getting-started/concepts",
+              "path": "/agent-propmt/en/docs/getting-started/concepts",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "getting-started/quick-start",
+              "path": "/agent-propmt/en/docs/getting-started/quick-start",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "intro",
+              "path": "/agent-propmt/en/docs/intro",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "patterns/hierarchical",
+              "path": "/agent-propmt/en/docs/patterns/hierarchical",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "patterns/orchestrator",
+              "path": "/agent-propmt/en/docs/patterns/orchestrator",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "patterns/peer-to-peer",
+              "path": "/agent-propmt/en/docs/patterns/peer-to-peer",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "patterns/supervisor",
+              "path": "/agent-propmt/en/docs/patterns/supervisor",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "patterns/swarm",
+              "path": "/agent-propmt/en/docs/patterns/swarm",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "prompt-design/context-management",
+              "path": "/agent-propmt/en/docs/prompt-design/context-management",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "prompt-design/output-formatting",
+              "path": "/agent-propmt/en/docs/prompt-design/output-formatting",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "prompt-design/principles",
+              "path": "/agent-propmt/en/docs/prompt-design/principles",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "prompt-design/role-definition",
+              "path": "/agent-propmt/en/docs/prompt-design/role-definition",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "prompt-design/system-prompts",
+              "path": "/agent-propmt/en/docs/prompt-design/system-prompts",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "tools/mcp",
+              "path": "/agent-propmt/en/docs/tools/mcp",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "tools/tool-calling",
+              "path": "/agent-propmt/en/docs/tools/tool-calling",
+              "sidebar": "guideSidebar"
+            },
+            {
+              "id": "tools/tool-definition",
+              "path": "/agent-propmt/en/docs/tools/tool-definition",
+              "sidebar": "guideSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "guideSidebar": {
+              "link": {
+                "path": "/agent-propmt/en/docs/intro",
+                "label": "intro"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

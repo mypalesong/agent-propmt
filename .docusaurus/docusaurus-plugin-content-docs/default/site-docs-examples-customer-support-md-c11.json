@@ -1,0 +1,23 @@
+{
+  "id": "examples/customer-support",
+  "title": "Customer Support Agent",
+  "description": "고객 지원을 위한 멀티 에이전트 시스템입니다.",
+  "source": "@site/docs/examples/customer-support.md",
+  "sourceDirName": "examples",
+  "slug": "/examples/customer-support",
+  "permalink": "/agent-propmt/en/docs/examples/customer-support",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/examples/customer-support.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Code Review Agent",
+    "permalink": "/agent-propmt/en/docs/examples/code-review-agent"
+  }
+}

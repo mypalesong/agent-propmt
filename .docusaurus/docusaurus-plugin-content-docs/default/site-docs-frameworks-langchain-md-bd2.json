@@ -1,0 +1,27 @@
+{
+  "id": "frameworks/langchain",
+  "title": "LangChain",
+  "description": "LangChain을 활용한 멀티 에이전트 프롬프트 설계입니다.",
+  "source": "@site/docs/frameworks/langchain.md",
+  "sourceDirName": "frameworks",
+  "slug": "/frameworks/langchain",
+  "permalink": "/agent-propmt/en/docs/frameworks/langchain",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/frameworks/langchain.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Swarm Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/swarm"
+  },
+  "next": {
+    "title": "AutoGen",
+    "permalink": "/agent-propmt/en/docs/frameworks/autogen"
+  }
+}

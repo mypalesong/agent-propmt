@@ -1,0 +1,27 @@
+{
+  "id": "patterns/hierarchical",
+  "title": "Hierarchical Pattern",
+  "description": "다층 구조로 에이전트들을 조직화하는 패턴입니다.",
+  "source": "@site/docs/patterns/hierarchical.md",
+  "sourceDirName": "patterns",
+  "slug": "/patterns/hierarchical",
+  "permalink": "/agent-propmt/en/docs/patterns/hierarchical",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/patterns/hierarchical.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Supervisor Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/supervisor"
+  },
+  "next": {
+    "title": "Peer-to-Peer Pattern",
+    "permalink": "/agent-propmt/en/docs/patterns/peer-to-peer"
+  }
+}

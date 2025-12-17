@@ -1,0 +1,24 @@
+{
+  "id": "intro",
+  "title": "Multi-Agent Prompt Guide",
+  "description": "멀티 에이전트 시스템에서 효과적인 프롬프트를 설계하기 위한 종합 가이드입니다.",
+  "source": "@site/docs/intro.md",
+  "sourceDirName": ".",
+  "slug": "/intro",
+  "permalink": "/agent-propmt/en/docs/intro",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/intro.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "slug": "/intro"
+  },
+  "sidebar": "guideSidebar",
+  "next": {
+    "title": "Quick Start",
+    "permalink": "/agent-propmt/en/docs/getting-started/quick-start"
+  }
+}

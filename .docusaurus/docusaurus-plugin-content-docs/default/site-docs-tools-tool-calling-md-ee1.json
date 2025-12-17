@@ -1,0 +1,27 @@
+{
+  "id": "tools/tool-calling",
+  "title": "Tool Calling",
+  "description": "에이전트가 도구를 효과적으로 호출하도록 프롬프트를 설계합니다.",
+  "source": "@site/docs/tools/tool-calling.md",
+  "sourceDirName": "tools",
+  "slug": "/tools/tool-calling",
+  "permalink": "/agent-propmt/en/docs/tools/tool-calling",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/mypalesong/agent-propmt/tree/guide/docs/tools/tool-calling.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "guideSidebar",
+  "previous": {
+    "title": "Tool Definition",
+    "permalink": "/agent-propmt/en/docs/tools/tool-definition"
+  },
+  "next": {
+    "title": "Model Context Protocol (MCP)",
+    "permalink": "/agent-propmt/en/docs/tools/mcp"
+  }
+}
