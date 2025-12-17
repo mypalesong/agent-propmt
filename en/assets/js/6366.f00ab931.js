@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkagent_prompt_docs=globalThis.webpackChunkagent_prompt_docs||[]).push([[6366],{6366(e,c,t){t.d(c,{createArchitectureServices:()=>a.S});var a=t(8980);t(7960)}}]);
